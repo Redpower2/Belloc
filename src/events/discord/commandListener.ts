@@ -15,6 +15,7 @@ client.on("interactionCreate",
         {
             const grupo = interaction.options.getSubcommandGroup(false);
             const subcomando = interaction.options.getSubcommand(false);
+            await interaction.deferReply();
             const comando = await commandList[commandName].execute(interaction);
             if(subcomando && comando === undefined)
             {

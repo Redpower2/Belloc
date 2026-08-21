@@ -28,7 +28,7 @@ const slash = path.join(carpeta, "slash.ts");
 const nombreMayusculas = nombreComando[0].toUpperCase() + nombreComando.slice(1)
 
 fs.writeFileSync(datos,
-`import { ComandosAyuda } from "../../../types/general/ComandosAyuda";
+`import { ComandosAyuda } from "../../../types/ComandosAyuda";
 
 
 export const ayuda: ComandosAyuda = {
