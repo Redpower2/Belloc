@@ -15,18 +15,18 @@ export async function execute(interaction: ChatInputCommandInteraction)
         const dichito = dicho.toLowerCase()
         if(filtro.some(palabra =>  dichito.includes(palabra)))
         {
-            return await interaction.editReply({
+            return await interaction.reply({
                 content: "Yo soy un tipo educado, no voy a repetir esas cosas."
             });
         }
-        return await interaction.editReply({
+        return await interaction.reply({
             content: dicho
         });
     }
     else
     {
         const random = numeroRandom(defolt.length);
-        return await interaction.editReply({
+        return await interaction.reply({
             content: defolt[random]
         });
     }
