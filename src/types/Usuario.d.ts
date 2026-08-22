@@ -4,6 +4,7 @@ interface Usuario
     nombre: string;
     dinero: number;
     banco: number;
-    inventario: [];
+    inventario: ItemInv[];
     trabajo: number; //indice del trabajo + 1
+    ultimoSalario: number; //time
 }
