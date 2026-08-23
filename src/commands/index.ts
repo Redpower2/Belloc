@@ -8,7 +8,7 @@ import { ChatInputCommandInteraction, REST, Routes, SlashCommandBuilder } from "
 
 import { config } from "../config";
 
-import { ComandosAyuda } from "../types/general/ComandosAyuda";
+import { ComandosAyuda } from "../types/ComandosAyuda";
 
 const rootPath = __dirname;
 
@@ -26,12 +26,7 @@ export const commandList: Record<string, Command> = {};
 
 export async function deployCommands()
 {
-    const rootFolders = readdirSync(rootPath).filter(
-        function(folder)
-        {
-            return  !folder.match("index.ts")  && !folder.match("index.js");
-        }
-    );
+    const rootFolders = readdirSync(rootPath).filter(folder => !folder.match("index.ts")  && !folder.match("index.js"));
 
     for(const folder of rootFolders)
     {
@@ -43,12 +38,7 @@ export async function deployCommands()
             {
                 const extensions =  [".ts", ".js"];
 
-                const extFound = extensions.find(
-                    function(ext)
-                    {
-                        return existsSync(join(categoryPath, commandFolder, `${fileName}${ext}`));
-                    }
-                );
+                const extFound = extensions.find(ext => existsSync(join(categoryPath, commandFolder, `${fileName}${ext}`)));
 
                 const fullPath = join(categoryPath, commandFolder, `${fileName}${extFound}`);
                 return pathToFileURL(fullPath).href;
@@ -86,27 +76,25 @@ export async function deployCommands()
             }
         }
     }
-    const commandsData = Object.values(commandList).map(
-        function(command) 
-        {
-            return command.data;
-        } 
-    );
+    const commandsData = Object.values(commandList).map(command => command.data);
 
     const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
-
-        try 
+    console.log("Refrescando comandos de barra (/)");
+    const inserto = await rest.put(
+        Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, config.DISCORD_SERVER_ID),
         {
-            console.log("Refrescando comandos de barra (/)");
-            await rest.put(
-            Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, config.DISCORD_SERVER_ID), {
-                body: commandsData,
-            });
-
-            console.log("Se han recargado los comandos de barra (/)");
-        } 
-        catch (error) 
-        {
-            console.error(error);
+            body: commandsData,
         }
+    ).catch(() => 
+    {
+        console.error();
+        return null;
+    });
+    
+    if(!inserto)
+    {
+        return;
+    }
+
+    console.log("Se han recargado los comandos de barra (/)");
 }
