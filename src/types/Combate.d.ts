@@ -1,6 +1,6 @@
 interface EstadoCombate
 {
-    id: number;
+    indice: number;
     inicio: number;
     fin: number;
     activo: boolean;
