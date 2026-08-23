@@ -2,6 +2,8 @@ interface EstadoCombate
 {
     id: number;
     inicio: number;
+    fin: number;
+    activo: boolean;
 }
 
 interface Participante

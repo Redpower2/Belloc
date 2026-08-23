@@ -25,7 +25,9 @@ const participanteSchema = new Schema<Participante>(
         estados: [
             {
                 id: Number,
-                incio: Number
+                inicio: Number,
+                fin: Number,
+                activo: Boolean
             }
         ]
     }
