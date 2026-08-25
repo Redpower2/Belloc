@@ -57,4 +57,6 @@ const usuarioSchema = new Schema<Usuario>(
     }
 );
 
-export const Usuarios = model<typeof usuarioSchema>("Usuario", usuarioSchema);
+export const Usuarios = model("Usuario", usuarioSchema);
+
+export type UsuarioDB = InstanceType<typeof Usuarios>;

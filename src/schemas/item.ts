@@ -36,4 +36,6 @@ const itemSchema = new Schema<Item>(
     }
 );
 
-export const Items = model<typeof itemSchema>("Item", itemSchema)
+export const Items = model("Item", itemSchema);
+
+export type ItemDB = InstanceType<typeof Items>;

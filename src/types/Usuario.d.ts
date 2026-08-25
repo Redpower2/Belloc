@@ -5,6 +5,6 @@ interface Usuario
     dinero: number;
     banco: number;
     inventario: ItemInv[];
-    trabajo: number; //indice del trabajo + 1
+    trabajo: number; //indice del trabajo
     ultimoSalario: number; //time
 }

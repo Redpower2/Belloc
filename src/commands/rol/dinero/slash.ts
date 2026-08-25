@@ -23,16 +23,15 @@ export const data: ChatInputApplicationCommandData = {
             description: "Dar dinero a un usuario",
             options: [
                 {
-                    type: ApplicationCommandOptionType.User,
-                    name: "usuario",
-                    description: "Usuario al que quieres darle dinero",
-                    required: true
-                },
-                {
                     type: ApplicationCommandOptionType.Integer,
                     name: "cantidad",
                     description: "Cantidad de dinero a dar",
                     required: true
+                },
+                {
+                    type: ApplicationCommandOptionType.User,
+                    name: "usuario",
+                    description: "Usuario al que quieres darle dinero"
                 }
             ]
         }

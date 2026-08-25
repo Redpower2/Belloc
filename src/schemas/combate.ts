@@ -46,4 +46,6 @@ const combateSchema = new Schema<Combate>({
     }
 });
 
-export const Combates = model<typeof combateSchema>("Combate", combateSchema)
+export const Combates = model("Combate", combateSchema)
+
+export type CombateDB = InstanceType<typeof Combates>;

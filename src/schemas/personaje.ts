@@ -22,4 +22,6 @@ const personajeSchema = new Schema<Personaje>(
     }
 )
 
-export const Personajes = model<typeof personajeSchema>("Personaje", personajeSchema)
+export const Personajes = model("Personaje", personajeSchema)
+
+export type PersonajeDB = InstanceType<typeof Personajes>;
