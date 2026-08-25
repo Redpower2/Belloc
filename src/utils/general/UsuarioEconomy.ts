@@ -5,6 +5,10 @@ type Propiedad = "banco" | "dinero"
 export const UsuarioEconomy = {
     async dardinero(usuario: UsuarioDB, cantidad: number, propiedad: Propiedad = "dinero")
     {
+        if(cantidad < 0)
+        {
+            return null;
+        }
         await usuario.updateOne({
             $inc: {
                 [propiedad]: cantidad
@@ -14,7 +18,7 @@ export const UsuarioEconomy = {
     },
     async quitardinero(usuario: UsuarioDB, cantidad: number, propiedad: Propiedad = "dinero")
     {
-        if(usuario[propiedad] < cantidad)
+        if(cantidad < 0 || usuario[propiedad] < cantidad)
         {
             return null;
         }
@@ -27,6 +31,10 @@ export const UsuarioEconomy = {
     },
     async fijardinero(usuario: UsuarioDB, cantidad: number, propiedad: Propiedad = "dinero")
     {
+        if(cantidad < 0)
+        {
+            return null;
+        }
         await usuario.updateOne({
             $set: {
                 [propiedad]: cantidad
