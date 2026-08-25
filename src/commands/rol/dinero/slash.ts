@@ -31,7 +31,13 @@ export const data: ChatInputApplicationCommandData = {
                 {
                     type: ApplicationCommandOptionType.User,
                     name: "usuario",
-                    description: "Usuario al que quieres darle dinero"
+                    description: "Usuario al que quieres darle dinero",
+                    required: true
+                },
+                {
+                    type: ApplicationCommandOptionType.Boolean,
+                    name: "banco",
+                    description: "Se lo mandarás al banco o en efectivo"
                 }
             ]
         }

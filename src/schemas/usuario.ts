@@ -4,8 +4,7 @@ const inventarioSchema = new Schema<ItemInv>(
     {
         id: {
             type: Number,
-            required: true,
-            unique: true
+            required: true
         },
         alias: {
             type: String,
@@ -13,8 +12,7 @@ const inventarioSchema = new Schema<ItemInv>(
         },
         subId: {
             type: String,
-            required: true,
-            unique: true
+            required: true
         },
         equipado: {
             type: Boolean,
