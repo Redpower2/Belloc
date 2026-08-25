@@ -123,6 +123,19 @@ export const data: ChatInputApplicationCommandData = {
                             required: true
                         }
                     ]
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "borrar",
+                    description: "Borrar el usuario de la base de datos",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.User,
+                            name: "usuario",
+                            description: "Usuario al que quieres borrar",
+                            required: true
+                        }
+                    ]
                 }
             ]
         },
