@@ -88,7 +88,7 @@ export const data: ChatInputApplicationCommandData = {
                 },
                 {
                     type: ApplicationCommandOptionType.Subcommand,
-                    name: "quitardinero",
+                    name: "quitarbanco",
                     description: "Quitar dinero al banco de a un usuario",
                     options: [
                         {
@@ -107,7 +107,7 @@ export const data: ChatInputApplicationCommandData = {
                 },
                 {
                     type: ApplicationCommandOptionType.Subcommand,
-                    name: "fijardinero",
+                    name: "fijarbanco",
                     description: "Fijar dinero del banco de un usuario",
                     options: [
                         {

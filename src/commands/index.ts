@@ -85,9 +85,9 @@ export async function deployCommands()
         {
             body: commandsData,
         }
-    ).catch(() => 
+    ).catch((err) => 
     {
-        console.error();
+        console.error(err);
         return null;
     });
     
