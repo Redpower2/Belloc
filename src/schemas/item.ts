@@ -13,16 +13,13 @@ const itemSchema = new Schema<Item>(
             required: true
         },
         descripcion: {
-            type: String,
-            required: true
+            type: String
         },
         imagen: {
-            type: String,
-            required: true
+            type: String
         },
         uso: {
-            type: String,
-            required: true
+            type: String
         },
         durabilidad: {
             type: Number,
