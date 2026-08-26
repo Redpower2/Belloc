@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { UsuarioManager } from "../../../utils/general/UsuarioManager";
-import { UsuarioEconomy } from "../../../utils/general/UsuarioEconomy";
+import { UsuarioManager } from "../../../economy/UsuarioManager";
+import { UsuarioEconomy } from "../../../economy/UsuarioEconomy";
 
 export async function dar(interaction: ChatInputCommandInteraction)
 {

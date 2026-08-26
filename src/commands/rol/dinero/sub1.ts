@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Guild, GuildMember } from "discord.js";
-import { UsuarioManager } from "../../../utils/general/UsuarioManager";
+import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { colores } from "../../../utils/general/colores";
 
 export async function ver(interaction: ChatInputCommandInteraction)

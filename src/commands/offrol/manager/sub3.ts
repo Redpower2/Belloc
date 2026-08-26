@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { UsuarioManager } from "../../../utils/general/UsuarioManager";
+import { UsuarioManager } from "../../../economy/UsuarioManager";
 
 export async function borrarUsuario(interaction: ChatInputCommandInteraction)
 {

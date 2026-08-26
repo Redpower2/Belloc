@@ -1,5 +1,5 @@
 import { User } from "discord.js";
-import { Usuarios } from "../../schemas/usuario";
+import { Usuarios } from "../schemas/usuario";
 
 export const UsuarioManager = {
     async crear(usuario: User, trabajo: number = 0)

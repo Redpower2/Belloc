@@ -140,6 +140,52 @@ export const data: ChatInputApplicationCommandData = {
             ]
         },
         {
+            type: ApplicationCommandOptionType.SubcommandGroup,
+            name: "item",
+            description: "Comandos de item",
+            options: [
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "crear",
+                    description: "Crear item",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.String,
+                            name: "nombre",
+                            description: "Nombre del item",
+                            required: true
+                        }
+                    ]
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "editar",
+                    description: "Editar item",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.Integer,
+                            name: "id",
+                            description: "ID del item",
+                            required: true
+                        }
+                    ]
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "borrar",
+                    description: "Borrar item",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.Integer,
+                            name: "id",
+                            description: "ID del item",
+                            required: true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             type: ApplicationCommandOptionType.Subcommand,
             name: "setup",
             description: "Iniciar la economia"

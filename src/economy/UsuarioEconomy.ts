@@ -1,4 +1,4 @@
-import { UsuarioDB } from "../../schemas/usuario";
+import { UsuarioDB } from "../schemas/usuario";
 
 type Propiedad = "banco" | "dinero"
 
