@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ComponentType, EmbedBuilder, FileUploadBuilder, FileUploadModalData, LabelBuilder, MessageFlags, ModalBuilder, SelectMenuModalData, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, TextInputBuilder, TextInputModalData, TextInputStyle } from "discord.js";
+import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ComponentType, EmbedBuilder, FileUploadBuilder, FileUploadModalData, LabelBuilder, MessageFlags, ModalBuilder, TextInputBuilder, TextInputModalData, TextInputStyle } from "discord.js";
 import { colores } from "../../../utils/general/colores";
 import { MINUTO, SEGUNDO } from "../../../utils/general/tiempo";
 import { ItemDB, Items } from "../../../schemas/item";
@@ -13,12 +13,12 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
                 components: [
                     new ButtonBuilder()
                         .setCustomId("descripcion")
-                        .setStyle(ButtonStyle.Secondary)
+                        .setStyle(ButtonStyle.Primary)
                         .setEmoji("✍️")
                         .setLabel("Descripción"),
                     new ButtonBuilder()
                         .setCustomId("imagen")
-                        .setStyle(ButtonStyle.Secondary)
+                        .setStyle(ButtonStyle.Primary)
                         .setEmoji("🖼️")
                         .setLabel("Imagen")
                 ]
@@ -28,17 +28,17 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
                 components: [
                     new ButtonBuilder()
                         .setCustomId("uso")
-                        .setStyle(ButtonStyle.Primary)
+                        .setStyle(ButtonStyle.Secondary)
                         .setEmoji("✨")
                         .setLabel("Uso"),
                     new ButtonBuilder()
                         .setCustomId("durabilidad")
-                        .setStyle(ButtonStyle.Primary)
+                        .setStyle(ButtonStyle.Secondary)
                         .setEmoji("⏳")
                         .setLabel("Durabilidad"),
                     new ButtonBuilder()
                         .setCustomId("stats")
-                        .setStyle(ButtonStyle.Primary)
+                        .setStyle(ButtonStyle.Secondary)
                         .setEmoji("⚡")
                         .setLabel("Stats")
                 ]
@@ -70,117 +70,7 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
 
     collector.on("collect", async b => 
     {
-        const modal = new ModalBuilder()
-        .setTitle(item.nombre)
-        .setCustomId("modal")
-        switch(b.customId)
-        {
-            case "descripcion":
-                modal
-                    .addLabelComponents(
-                        new LabelBuilder()
-                            .setLabel("Descripción")
-                            .setTextInputComponent(
-                                new TextInputBuilder()
-                                .setCustomId("descripcion")
-                                .setRequired(true)
-                                .setStyle(TextInputStyle.Paragraph)
-                            )
-                    );
-            break;
-            case "imagen":
-                modal
-                    .addLabelComponents(
-                        new LabelBuilder()
-                            .setLabel("Imagen")
-                            .setFileUploadComponent(
-                                new FileUploadBuilder()
-                                .setCustomId("imagen")
-                                .setMaxValues(1)
-                                .setRequired(true)
-                            )
-                    );
-            break;
-            case "uso":
-                modal
-                    .addLabelComponents(
-                        new LabelBuilder()
-                            .setLabel("Uso")
-                            .setTextInputComponent(
-                                new TextInputBuilder()
-                                    .setCustomId("uso")
-                                    .setPlaceholder("general")
-                                    .setRequired(true)
-                                    .setStyle(TextInputStyle.Short)
-                            )
-                    );
-            break;
-            case "durabilidad":
-                modal
-                    .addLabelComponents(
-                        new LabelBuilder()
-                            .setLabel("Durabilidad")
-                            .setTextInputComponent(
-                                new TextInputBuilder()
-                                    .setCustomId("durabilidad")
-                                    .setPlaceholder("-1")
-                                    .setRequired(true)
-                                    .setStyle(TextInputStyle.Short)
-                            )
-                    );
-            break;
-            case "stats":
-                modal
-                    .addLabelComponents(
-                        new LabelBuilder()
-                            .setLabel("Daño")
-                            .setTextInputComponent(
-                                new TextInputBuilder()
-                                    .setCustomId("daño")
-                                    .setPlaceholder("0")
-                                    .setStyle(TextInputStyle.Short)
-                            ),
-                        new LabelBuilder()
-                            .setLabel("Defensa")
-                            .setTextInputComponent(
-                                new TextInputBuilder()
-                                    .setCustomId("defensa")
-                                    .setPlaceholder("0")
-                                    .setStyle(TextInputStyle.Short)
-                            ),
-                        new LabelBuilder()
-                            .setLabel("Dado")
-                            .setTextInputComponent(
-                                new TextInputBuilder()
-                                    .setCustomId("dado")
-                                    .setPlaceholder("0")
-                                    .setStyle(TextInputStyle.Short)
-                            )
-                    );
-            break;
-            case "cancelar":
-                return collector.stop("cancelar");
-            case "confirmar":
-                return collector.stop("confirmar");
-
-        }
-        await b.showModal(modal);
-        const modalEnviado = await b.awaitModalSubmit(
-            {
-                filter: m => m.user.id === interaction.user.id,
-                time: 60 * SEGUNDO
-            }
-        )
-        .catch(() => null);
-        if(!modalEnviado)
-        {
-            return console.log("!modalEnviado");
-        }
-        await modalEnviado.deferUpdate();
-        const eleccion = Array.from(modalEnviado.fields.fields)[0][1]
-        let valor;
-        let fieldNombre: string;
-        function manejarFields(fieldNombre: string, valor: number | string)
+        const manejarFields = (fieldNombre: string, valor: number | string) =>
         {
             const fieldExistente = embed.data.fields?.findIndex(f => f.name.includes(fieldNombre));
             if(fieldExistente !== -1 && fieldExistente !== undefined)
@@ -202,42 +92,208 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
                 ]);
             }
         }
-        switch(eleccion.customId)
+        switch(b.customId)
         {
             case "descripcion":
-                valor = (eleccion as TextInputModalData).value
-                item.descripcion = valor;
-                embed.setDescription(valor);
+                const modalDesc = new ModalBuilder()
+                    .setCustomId("modaldesc")
+                    .setTitle(item.nombre)
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel("Descripción")
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                .setCustomId("descripcion")
+                                .setRequired(true)
+                                .setStyle(TextInputStyle.Paragraph)
+                            )
+                    );
+                await b.showModal(modalDesc);
+                const modalEnviado = await b.awaitModalSubmit(
+                    {
+                        filter: m => m.user.id === interaction.user.id,
+                        time: 60 * SEGUNDO
+                    }
+                )
+                .catch(() => null);
+                if(!modalEnviado)
+                {
+                    return;
+                }
+                await modalEnviado.deferUpdate();
+                const valor1 = modalEnviado.fields.fields.first() as TextInputModalData;
+                const texto = valor1.value;
+                item.descripcion = texto;
+                embed.setDescription(texto);
             break;
             case "imagen":
-                valor = (eleccion as FileUploadModalData).attachments.values().next().value!.url
-                item.imagen = valor;
-                embed.setThumbnail(valor);
+                const modalImagen = new ModalBuilder()
+                    .setCustomId("modalimg")
+                    .setTitle(item.nombre)
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel("Imagen")
+                            .setFileUploadComponent(
+                                new FileUploadBuilder()
+                                .setCustomId("imagen")
+                                .setMaxValues(1)
+                                .setRequired(true)
+                            )
+                    );
+                await b.showModal(modalImagen);
+                const modalEnviado2 = await b.awaitModalSubmit(
+                    {
+                        filter: m => m.user.id === interaction.user.id,
+                        time: 60 * SEGUNDO
+                    }
+                )
+                .catch(() => null);
+                if(!modalEnviado2)
+                {
+                    return;
+                }
+                await modalEnviado2.deferUpdate();
+                const valor2 = modalEnviado2.fields.fields.first() as FileUploadModalData;
+                const imagen = valor2.attachments.first()!.url;
+                item.imagen = imagen;
+                embed.setThumbnail(imagen);
             break;
             case "uso":
-                valor = (eleccion as TextInputModalData).value
-                item.uso = valor
-                fieldNombre = "Uso"
-                manejarFields(fieldNombre, valor);
-            break;
-            default:
-                valor = (eleccion as TextInputModalData).value
-                const valorReal = Number(valor);
-                if(isNaN(valorReal) || valorReal < 0)
+                const modalUso = new ModalBuilder()
+                    .setCustomId("modaluso")
+                    .setTitle(item.nombre)
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel("Uso")
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                    .setCustomId("uso")
+                                    .setPlaceholder("general")
+                                    .setRequired(true)
+                                    .setStyle(TextInputStyle.Short)
+                            )
+                    );
+                await b.showModal(modalUso);
+                const modalEnviado3 = await b.awaitModalSubmit(
+                    {
+                        filter: m => m.user.id === interaction.user.id,
+                        time: 60 * SEGUNDO
+                    }
+                )
+                .catch(() => null);
+                if(!modalEnviado3)
                 {
-                    return modalEnviado.followUp({
-                        content: "Valor inválido",
-                        flags: MessageFlags.Ephemeral
+                    return;
+                }
+                await modalEnviado3.deferUpdate();
+                const valor3 = modalEnviado3.fields.fields.first() as TextInputModalData;
+                const texto2 = valor3.value;
+                item.uso = texto2;
+                manejarFields("Uso", texto2);
+            break;
+            case "durabilidad":
+                const modalDurabilidad = new ModalBuilder()
+                    .setCustomId("modaldurab")
+                    .setTitle(item.nombre)
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel("Durabilidad")
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                    .setCustomId("durabilidad")
+                                    .setPlaceholder("-1")
+                                    .setRequired(true)
+                                    .setStyle(TextInputStyle.Short)
+                            )
+                    );
+                await b.showModal(modalDurabilidad);
+                const modalEnviado4 = await b.awaitModalSubmit(
+                    {
+                        filter: m => m.user.id === interaction.user.id,
+                        time: 60 * SEGUNDO
+                    }
+                )
+                .catch(() => null);
+                if(!modalEnviado4)
+                {
+                    return;
+                }
+                await modalEnviado4.deferUpdate();
+                const valor4 = modalEnviado4.fields.fields.first() as TextInputModalData;
+                const valorReal = Number(valor4.value);
+                if(isNaN(valorReal) || (valorReal < 0 && valorReal !== -1))
+                {
+                    return await modalEnviado4.followUp({
+                        content: "No es un numero válido."
                     })
                 }
+                item.durabilidad = valorReal;
+                manejarFields("Durabilidad", valorReal)
+            break;
+            case "stats":
+                const modalStats = new ModalBuilder()
+                    .setCustomId("modalstats")
+                    .setTitle(item.nombre)
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel("Daño")
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                    .setCustomId("daño")
+                                    .setPlaceholder("0")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(false)
+                            ),
+                        new LabelBuilder()
+                            .setLabel("Defensa")
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                    .setCustomId("defensa")
+                                    .setPlaceholder("0")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(false)
+                            ),
+                        new LabelBuilder()
+                            .setLabel("Dado")
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                    .setCustomId("dado")
+                                    .setPlaceholder("0")
+                                    .setStyle(TextInputStyle.Short)
+                                    .setRequired(false)
+                            )
+                    );
+                await b.showModal(modalStats);
+                const modalEnviado5 = await b.awaitModalSubmit(
+                    {
+                        filter: m => m.user.id === interaction.user.id,
+                        time: 60 * SEGUNDO
+                    }
+                )
+                .catch(() => null);
+                if(!modalEnviado5)
+                {
+                    return;
+                }
+                await modalEnviado5.deferUpdate();
                 if(!item.stats)
                 {
                     item.stats = {};
                 }
-                item.stats[eleccion.customId as "daño" | "defensa" | "dado"] = valorReal;
-                fieldNombre = `${aMayusculas(eleccion.customId)}`
-                manejarFields(fieldNombre, valor);
-                break;
+                modalEnviado5.fields.fields.forEach(field => 
+                {
+                    const fieldReal = field as TextInputModalData;
+                    if(fieldReal.value)
+                    {
+                        item.stats![field.customId as "daño" | "defensa" | "dado"] = Number(fieldReal.value);
+                        manejarFields(aMayusculas(fieldReal.customId), fieldReal.value);
+                    }
+                });
+            break;
+            case "cancelar":
+                return collector.stop("cancelar");
+            case "confirmar":
+                return collector.stop("confirmar");
 
         }
         await mensaje.edit({
@@ -255,7 +311,9 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
             });
             case "cancelar":
             return await interaction.editReply({
-                content: "¡Item cancelado!"
+                content: "¡Item cancelado!",
+                embeds: [],
+                components: []
             });
             case "confirmar":
                 if(nombreDB)
@@ -266,19 +324,22 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
                 {
                     await Items.create(item);
                 }
-                if(item.uso && Object.keys(usoEntidades).includes(item.uso))
+                if(item.uso)
                 {
-                    embed
-                    .setColor(colores.exitoMedio);
-                }
-                else
-                {
-                    embed
-                    .setFooter(
-                        {
-                            text: "¡Ten en cuenta de que el uso no está manejado! Luego de manejar el uso, tendrás que activar por tu cuenta"
-                        }
-                    )
+                    if(Object.keys(usoEntidades).includes(item.uso))
+                    {
+                        embed
+                            .setColor(colores.exitoMedio);
+                    }
+                    else 
+                    {
+                        embed
+                        .setFooter(
+                            {
+                                text: "¡Ten en cuenta de que el uso no está manejado! Luego de manejar el uso, tendrás que activar por tu cuenta"
+                            }
+                        )
+                    }
                 }
             return await interaction.editReply({
                 content: "¡Item creado con éxito!",
