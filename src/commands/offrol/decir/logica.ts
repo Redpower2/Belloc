@@ -24,7 +24,8 @@ const defolt = [
     "<@752699383216210030> Marica",
     "Puro hueso me mandó fotopolla, ¿Qué hago?",
     "COSAS QUE ODIO QUE HAGA MI TILINA 😒😡\nNúmero 1: que No responda mis mensajes 🤬 .... ¿Tilinaaa 🥺? Hola 👋 estoy aquiii llamando al planeta tierra 🌎 ya respondemeee 😥🙄\n Número 2: que no me lea la mente 😭, si tengo la cara así: 😣, es porque quiero un BESHITOOOO 😽, si tengo la cara así: 🥺, es porque tengo HAMBRE 🥹, dame de comer tilina 😫\n cOSAS que odio de que mi tilina tenga COLICOSHH 😩\n Número 1: le Duele sU BARRguita 😢, yo no quiero que le duela su barriguita 😡\n Número 2: que alguien más tenga su atención 😤 pq tener colicos.... su atención la tienen sus colicos y no YO 👿\n Número 3: se siente TITE 😞💔 YOno quiero que mi tilina se sienta tite 😖 ni enojada 👺, simepre quiero que esté feliz 😊 y enamorada de MI 😍",
-    "¡No disparen! ¡Soy imbécil!\n>A ver, demuestralo\nOhhh, Signalis, eres el mejor juego del mundo, tienes tantas cosas increibles como personajes lesbianas te chuparé el pene\n>Ok, este si que es imbécil. No le disparen, ven a tomarte una cerveza conmigo hermano."
+    "¡No disparen! ¡Soy imbécil!\n>A ver, demuestralo\nOhhh, Signalis, eres el mejor juego del mundo, tienes tantas cosas increibles como personajes lesbianas te chuparé el pene\n>Ok, este si que es imbécil. No le disparen, ven a tomarte una cerveza conmigo hermano.",
+    `Por favor poné una etiqueta NSFW en esto. Estaba en el tren y cuando vi esto me empecé a masturbar furiosamente. Los demás del vagón me miraban raro y andaban diciendo cosas como "Qué carajos" y "llamen a la policía". Se me cayó el celu y todos a mi alrededor vieron esta imagen. Ahora hay todo un tren de hombres masturbándose juntos por esta imagen. Todo esto es tu culpa. Pudiste haber prevenido esto si tan solo hubieses puesto una etiqueta NSFW en este post.`
 ];
 
 //me da miedo que me reporten el bot o que raideen con él, yo dejaria hacer quilombo eh
