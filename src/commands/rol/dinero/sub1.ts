@@ -14,7 +14,7 @@ export async function ver(interaction: ChatInputCommandInteraction)
     return await interaction.reply({
         embeds: [
             {
-                title: `Dinero de ${miembro.nickname ?? userDisc.username}`,
+                title: `Dinero de ${usuario.nombre}`,
                 description: `-# Dinero total: ${dinero+banco}💲\n-# Dinero en efectivo: ${dinero}🪙\n-# Dinero en el banco: ${banco}💰`,
                 color: colores.exitoMedio
             }
