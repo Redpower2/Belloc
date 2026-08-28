@@ -15,12 +15,10 @@ const inventarioSchema = new Schema<ItemInv>(
             required: true
         },
         equipado: {
-            type: Boolean,
-            required: true
+            type: Boolean
         },
         durabilidadActual: {
-            type: Number,
-            required: true
+            type: Number
         },
     }
 )

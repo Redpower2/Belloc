@@ -3,6 +3,6 @@ interface ItemInv
     id: number;
     alias: string;
     subId: string; 
-    equipado: boolean;
-    durabilidadActual: number;
+    equipado?: boolean;
+    durabilidadActual?: number;
 }
