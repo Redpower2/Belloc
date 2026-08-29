@@ -353,6 +353,12 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
 export async function crearItem(interaction: ChatInputCommandInteraction)
 {
     const nombre = interaction.options.getString("nombre", true);
+    if(nombre.length > 32)
+    {
+        return await interaction.reply({
+            content: "Ese nombre es muy largo."
+        });
+    }
     if(nombre === "### ELIMINADO ###")
     {
         return await interaction.reply({
