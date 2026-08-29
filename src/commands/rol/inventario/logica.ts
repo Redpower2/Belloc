@@ -51,7 +51,7 @@ export async function execute(interaction: ChatInputCommandInteraction)
 
                 const barra = color.repeat(llenos) + niveles[0].repeat(6 - llenos);
 
-                section.addTextDisplayComponents(display => display.setContent(`-# ${barra}`))
+                section.addTextDisplayComponents(display => display.setContent(`-# [${barra}]`))
             }
             container
                 .addSectionComponents(section);
