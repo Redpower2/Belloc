@@ -28,6 +28,7 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuario: U
                         .setLabel("Info")
                         .setEmoji("🔍")
                         .setStyle(ButtonStyle.Primary)
+                        .setDisabled(true)
                 )
             if(item.durabilidadActual)
             {
