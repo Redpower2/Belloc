@@ -1,29 +1,27 @@
-//Tengo que poner lo de paginado en inventario y tambien
 //Ver de agrupar varios iguales en uno mismo porque si no es un quilombo
 //Tambien manejar lo de info y lo de usar
-import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, TextDisplayBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, TextDisplayBuilder } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { colores } from "../../../utils/general/colores";
 import { Items } from "../../../schemas/item";
+import { MINUTO } from "../../../utils/general/tiempo";
 
-
-export async function execute(interaction: ChatInputCommandInteraction)
+async function manejarArray(interaction: ChatInputCommandInteraction, usuario: Usuario, itemsArrays: ItemInv[][], indice: number)
 {
-    const userDisc = interaction.options.getUser("usuario") ?? interaction.user;
-    const usuario = await UsuarioManager.obtener(userDisc);
-    const { inventario } = usuario;
+    const componentes = [];
+    const { length } = itemsArrays;
     const container = new ContainerBuilder()
         .setAccentColor(colores.especial)
-        .addTextDisplayComponents(display => display.setContent(`## Inventario de ${usuario.nombre}`));
-    if(inventario.length)
+        .addTextDisplayComponents(display => display.setContent(`## Inventario de ${usuario.nombre} (${indice+1}/${length})`));
+    if(itemsArrays[indice] && itemsArrays[indice].length)
     {
-        for(const item of inventario)
+        for(const item of itemsArrays[indice])
         {
             const equipadoText = item.equipado
                 ? " (Equipado)"
                 : "";
             const section = new SectionBuilder()
-                .addTextDisplayComponents(display => display.setContent(item.alias+equipadoText))
+                .addTextDisplayComponents(display => display.setContent(`### ${item.alias+equipadoText}`))
                 .setButtonAccessory(
                     new ButtonBuilder()
                         .setCustomId(`item_${item.id}_${item.subId}`)
@@ -62,8 +60,105 @@ export async function execute(interaction: ChatInputCommandInteraction)
         container
             .addTextDisplayComponents(display => display.setContent("No hay items disponibles para mostrar."))
     }
-    return await interaction.reply({
-        components: [container],
+    componentes.push(container);
+    if(itemsArrays.length > 1)
+    {
+        const row = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId("paginaminus")
+                    .setEmoji("⬅️")
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId("paginazero")
+                    .setEmoji("🔄️")
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId("paginaplus")
+                    .setEmoji("➡️")
+                    .setStyle(ButtonStyle.Primary)
+            );
+        componentes.push(row)
+    }
+    return await interaction.editReply({
+        components: componentes,
         flags: MessageFlags.IsComponentsV2
+    });
+}
+
+
+
+export async function execute(interaction: ChatInputCommandInteraction)
+{
+    await interaction.deferReply();
+    const userDisc = interaction.options.getUser("usuario") ?? interaction.user;
+    const usuario = await UsuarioManager.obtener(userDisc);
+    const { inventario } = usuario;
+    const itemsArrays: ItemInv[][] = [];
+    let indice = -1;
+    for(let i = 0 ; i < inventario.length ; i++)
+    {
+        if(i%12 === 0)
+        {
+            indice += 1;
+            itemsArrays.push([]);
+        }
+        itemsArrays[indice].push(inventario[i]);
+    }
+    indice = 0;
+    const mensaje = await manejarArray(interaction, usuario, itemsArrays, indice);
+    const collector = mensaje.createMessageComponentCollector({
+        filter: i => i.user.id === interaction.user.id,
+        time: 10 * MINUTO
+    });
+    collector.on("collect", async boton => 
+    {
+        const { customId } = boton;
+        await boton.deferUpdate();
+        if(customId === "paginaminus")
+        {
+            indice -= 1
+            if(indice < 0)
+            {
+                indice = itemsArrays.length - 1
+            }
+            await manejarArray(interaction, usuario, itemsArrays, indice);
+        }
+        else if(customId === "paginazero")
+        {
+            indice = 0;
+            await manejarArray(interaction, usuario, itemsArrays, indice);
+        }
+        else if(customId === "paginaplus")
+        {
+            indice += 1
+            if(indice > itemsArrays.length - 1)
+            {
+                indice = 0;
+            }
+            await manejarArray(interaction, usuario, itemsArrays, indice);
+        }
+        else
+        {
+            return collector.stop("info_sub-id");
+        }
+    });
+    collector.on("end", async (_, reason) => 
+    {
+        switch(reason)
+        {
+            case "time":
+                return await interaction.editReply({
+                    components: [
+                        new TextDisplayBuilder({ content: "Tiempo de visualización finalizado." })
+                    ]
+                });
+            case "info_sub-id":
+                return await interaction.editReply({
+                    components: [
+                        new TextDisplayBuilder({ content: "No deberias estar viendo esto" })
+                    ]
+                });
+        }
     });
 }
