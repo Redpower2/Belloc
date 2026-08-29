@@ -378,9 +378,11 @@ export async function crearItem(interaction: ChatInputCommandInteraction)
         })
     }
 
+    const idLibre = await Items.findOne({ nombre: "### ELIMINADO ###" });
+
     const item: Item = {
-        id: nombreDB 
-            ? nombreDB.id
+        id: idLibre
+            ? idLibre.id
             : await Items.countDocuments() + 1,
         nombre: nombre,
         durabilidad: -1
@@ -390,7 +392,7 @@ export async function crearItem(interaction: ChatInputCommandInteraction)
         title: nombre,
         color: colores.advertencia
     });
-    return await manejoItem(interaction, embed, item, nombreDB);
+    return await manejoItem(interaction, embed, item, idLibre);
 }
 
 export async function editarItem(interaction: ChatInputCommandInteraction)
