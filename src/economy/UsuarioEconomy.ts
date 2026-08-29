@@ -60,7 +60,7 @@ export const UsuarioEconomy = {
                 alias: nombre,
                 subId: await genId()
             }
-            if(durabilidad)
+            if(durabilidad && durabilidad !== -1)
             {
                 fabricItem.durabilidadActual = durabilidad;
                 fabricItem.equipado = false;
