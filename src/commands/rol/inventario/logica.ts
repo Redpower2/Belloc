@@ -1,5 +1,6 @@
 //Tengo que poner lo de paginado en inventario y tambien
 //Ver de agrupar varios iguales en uno mismo porque si no es un quilombo
+//Tambien manejar lo de info y lo de usar
 import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, TextDisplayBuilder } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { colores } from "../../../utils/general/colores";

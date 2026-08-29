@@ -1,0 +1,1 @@
+export type ParametrosItem = "subId" | "alias" | "id"

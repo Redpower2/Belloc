@@ -62,6 +62,21 @@ export const ayuda: ComandosAyuda = {
             nombre: "item borrar",
             descripcion: "Borrar un item de la base de datos",
             emoji: "🗑"
+        },
+        {
+            nombre: "usuario daritem",
+            descripcion: "Darle un item a un usuario",
+            emoji: "🛠️"
+        },
+        {
+            nombre: "usuario quitaritem",
+            descripcion: "Quitarle un item a un usuario",
+            emoji: "🔨"
+        },
+        {
+            nombre: "usuario limpiarinv",
+            descripcion: "Borrar todos los items de un usuario",
+            emoji: "🧹"
         }
     ],
     color: colores.especial

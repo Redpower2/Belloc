@@ -1,5 +1,6 @@
 import { ItemDB } from "../schemas/item";
 import { UsuarioDB } from "../schemas/usuario";
+import { ParametrosItem } from "../types/ParametrosItem";
 import { genId } from "../utils/general/genId";
 
 type Propiedad = "banco" | "dinero"
@@ -44,7 +45,7 @@ export const UsuarioEconomy = {
         });
         return cantidad;
     },
-    async daritem(usuario: UsuarioDB, item: ItemDB, cantidad: number = 1)
+    async daritem(usuario: UsuarioDB, item: ItemDB, cantidad: number)
     {
         if(cantidad <= 0)
         {
@@ -75,15 +76,14 @@ export const UsuarioEconomy = {
         });
         return nuevosItems;
     },
-    async quitaritem(usuario: UsuarioDB, item: ItemInv, cantidad: number = 1)
+    async quitaritem(usuario: UsuarioDB, prm1: ParametrosItem, prm2: string | number, cantidad: number)
     {
-        const { id } = item;
-        const cantidadItems = usuario.inventario.filter(it => it.id === id);
-        if(cantidad > cantidadItems.length || cantidad <= 0)
+        const items = usuario.inventario.filter(it => it[prm1] === prm2);
+        if(cantidad > items.length || cantidad <= 0)
         {
             return null;
         }
-        const itemsBorrados = cantidadItems
+        const itemsBorrados = items
             .slice(0, cantidad)
             .map(it => it.subId);
         
@@ -98,15 +98,14 @@ export const UsuarioEconomy = {
         });
         return itemsBorrados
     },
-    async transferiritem(usuario1: UsuarioDB, usuario2: UsuarioDB, item: ItemInv, cantidad: number = 1)
+    async transferiritem(usuario1: UsuarioDB, usuario2: UsuarioDB, prm1: ParametrosItem, prm2: string | number, cantidad: number)
     {
-        const { id } = item;
-        const cantidadItems = usuario1.inventario.filter(it => it.id === id);
-        if(cantidad > cantidadItems.length || cantidad <= 0)
+        const items = usuario1.inventario.filter(it => it[prm1] === prm2);
+        if(cantidad > items.length || cantidad <= 0)
         {
             return null;
         }
-        const itemsTransferidos = cantidadItems
+        const itemsTransferidos = items
             .slice(0, cantidad)
         const subIds = itemsTransferidos
             .map(it => it.subId);

@@ -136,6 +136,71 @@ export const data: ChatInputApplicationCommandData = {
                             required: true
                         }
                     ]
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "daritem",
+                    description: "Darle un item a un usuario",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.User,
+                            name: "usuario",
+                            description: "El usuario en cuestión",
+                            required: true
+                        },
+                        {
+                            type: ApplicationCommandOptionType.Integer,
+                            name: "id",
+                            description: "Id del item",
+                            required: true
+                        },
+                        {
+                            type: ApplicationCommandOptionType.Integer,
+                            name: "cantidad",
+                            description: "Cuantos items"
+                        }
+                    ]
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "quitaritem",
+                    description: "Quitarle un item a un usuario",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.User,
+                            name: "usuario",
+                            description: "El usuario en cuestión",
+                            required: true
+                        },
+                        {
+                            type: ApplicationCommandOptionType.Integer,
+                            name: "id",
+                            description: "Id del item (excluyente del SubID)"
+                        },
+                        {
+                            type: ApplicationCommandOptionType.String,
+                            name: "sub-id",
+                            description: "SubId del item (excluyente del Id)"
+                        },
+                        {
+                            type: ApplicationCommandOptionType.Integer,
+                            name: "cantidad",
+                            description: "Cuantos items"
+                        }
+                    ]
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "limpiarinv",
+                    description: "Borrar todos los items del usuario",
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.User,
+                            name: "usuario",
+                            description: "El usuario en cuestión",
+                            required: true
+                        }
+                    ]
                 }
             ]
         },
