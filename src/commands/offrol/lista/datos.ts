@@ -11,6 +11,11 @@ export const ayuda: ComandosAyuda = {
             nombre: "usuarios",
             descripcion: "Los usuarios que participaron de la economia",
             emoji: "🗣️"
+        },
+        {
+            nombre: "items",
+            descripcion: "Los items de la economia",
+            emoji: "🛠️"
         }
     ],
     color: colores.especial

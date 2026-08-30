@@ -1,17 +1,16 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, EmbedBuilder, TextDisplayBuilder } from "discord.js";
-import { Usuarios } from "../../../schemas/usuario";
+import { Items } from "../../../schemas/item";
 import { colores } from "../../../utils/general/colores";
 import { MINUTO } from "../../../utils/general/tiempo";
-
-async function manejarArray(interaction: ChatInputCommandInteraction, usuariosArrays: Usuario[][], indice: number)
+async function manejarArray(interaction: ChatInputCommandInteraction, itemsArrays: Item[][], indice: number)
 {
     const componentes = [];
-    const descripcion = usuariosArrays[indice]
+    const descripcion = itemsArrays[indice]
         .map(u => `${u.nombre} | <@${u.id}>`)
         .join("\n");
-    const { length } = usuariosArrays
+    const { length } = itemsArrays
     const embed = new EmbedBuilder()
-        .setTitle(`Usuarios del servidor (${indice + 1}/${length})`)
+        .setTitle(`Items del servidor (${indice + 1}/${length})`)
         .setDescription(descripcion)
         .setColor(colores.personaje);
     if(length > 1)
@@ -40,23 +39,13 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuariosAr
 }
 
 
-export async function usuarios(interaction: ChatInputCommandInteraction)
+export async function items(interaction: ChatInputCommandInteraction)
 {
     await interaction.deferReply();
-    const usuarios = await Usuarios.find({});
-    const usuariosArrays: Usuario[][] = [];
+    const items = Items.find({});
+    const itemsArrays: Item[][] = [];
     let indice = -1;
-    for(let i = 0 ; i < usuarios.length ; i++)
-    {
-        if(i%16 === 0)
-        {
-            indice += 1;
-            usuariosArrays.push([]);
-        }
-        usuariosArrays[indice].push(usuarios[i]);
-    }
-    indice = 0;
-    const mensaje = await manejarArray(interaction, usuariosArrays, indice);
+    const mensaje = await manejarArray(interaction, itemsArrays, indice);
     const collector = mensaje.createMessageComponentCollector({
         filter: i => i.user.id === interaction.user.id,
         time: 10 * MINUTO
@@ -70,23 +59,23 @@ export async function usuarios(interaction: ChatInputCommandInteraction)
             indice -= 1
             if(indice < 0)
             {
-                indice = usuariosArrays.length - 1
+                indice = itemsArrays.length - 1
             }
-            await manejarArray(interaction, usuariosArrays, indice);
+            await manejarArray(interaction, itemsArrays, indice);
         }
         else if(customId === "paginazero")
         {
             indice = 0;
-            await manejarArray(interaction, usuariosArrays, indice);
+            await manejarArray(interaction, itemsArrays, indice);
         }
         else if(customId === "paginaplus")
         {
             indice += 1
-            if(indice > usuariosArrays.length - 1)
+            if(indice > itemsArrays.length - 1)
             {
                 indice = 0;
             }
-            await manejarArray(interaction, usuariosArrays, indice);
+            await manejarArray(interaction, itemsArrays, indice);
         }
         else
         {
