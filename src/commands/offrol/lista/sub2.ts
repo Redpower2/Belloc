@@ -5,9 +5,12 @@ import { MINUTO } from "../../../utils/general/tiempo";
 async function manejarArray(interaction: ChatInputCommandInteraction, itemsArrays: Item[][], indice: number)
 {
     const componentes = [];
-    const descripcion = itemsArrays[indice]
-        .map(u => `${u.nombre} | <@${u.id}>`)
-        .join("\n");
+    const descripcion = itemsArrays[indice] && itemsArrays[indice].length
+        ? itemsArrays[indice]
+            .filter(i => i.nombre !== "### ELIMINADO ###")
+            .map(i => `[${i.id}] ${i.nombre}`)
+            .join("\n")
+        : "No hay items en el servidor.";
     const { length } = itemsArrays
     const embed = new EmbedBuilder()
         .setTitle(`Items del servidor (${indice + 1}/${length})`)
@@ -42,9 +45,19 @@ async function manejarArray(interaction: ChatInputCommandInteraction, itemsArray
 export async function items(interaction: ChatInputCommandInteraction)
 {
     await interaction.deferReply();
-    const items = Items.find({});
+    const items = await Items.find({});
     const itemsArrays: Item[][] = [];
     let indice = -1;
+    for(let i = 0 ; i < items.length ; i++)
+    {
+        if(i%16 === 0)
+        {
+            indice += 1;
+            itemsArrays.push([]);
+        }
+        itemsArrays[indice].push(items[i]);
+    }
+    indice = 0;
     const mensaje = await manejarArray(interaction, itemsArrays, indice);
     const collector = mensaje.createMessageComponentCollector({
         filter: i => i.user.id === interaction.user.id,

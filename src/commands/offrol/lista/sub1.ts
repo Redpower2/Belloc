@@ -6,9 +6,11 @@ import { MINUTO } from "../../../utils/general/tiempo";
 async function manejarArray(interaction: ChatInputCommandInteraction, usuariosArrays: Usuario[][], indice: number)
 {
     const componentes = [];
-    const descripcion = usuariosArrays[indice]
-        .map(u => `${u.nombre} | <@${u.id}>`)
-        .join("\n");
+    const descripcion = usuariosArrays[indice] && usuariosArrays[indice].length
+        ? usuariosArrays[indice]
+            .map(u => `${u.nombre} | <@${u.id}>`)
+            .join("\n")
+        : "No hay items en el servidor.";
     const { length } = usuariosArrays
     const embed = new EmbedBuilder()
         .setTitle(`Usuarios del servidor (${indice + 1}/${length})`)

@@ -9,6 +9,11 @@ export const data: ChatInputApplicationCommandData = {
             type: ApplicationCommandOptionType.Subcommand,
             name: "usuarios",
             description: "Los usuarios del servidor"
+        },
+        {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "items",
+            description: "Items de la economia"
         }
     ]
 }
