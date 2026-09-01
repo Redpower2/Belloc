@@ -33,6 +33,12 @@ export const data: ChatInputApplicationCommandData = {
             description: "Darle un item a otro usuario",
             options: [
                 {
+                    type: ApplicationCommandOptionType.User,
+                    name: "usuario",
+                    description: "Usuario al que le darás el item",
+                    required: true
+                },
+                {
                     type: ApplicationCommandOptionType.String,
                     name: "nombre",
                     description: "Nombre del Item (EXCLUYENTE CON SUBID)"
