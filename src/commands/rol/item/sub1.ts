@@ -1,9 +1,59 @@
 import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, EmbedBuilder, MessageFlags, SectionBuilder } from "discord.js";
 import { Items } from "../../../schemas/item";
-import { Usuarios } from "../../../schemas/usuario";
 import { colores } from "../../../utils/general/colores";
 import { aMayusculas } from "../../../utils/general/aMayusculas";
 import { MINUTO } from "../../../utils/general/tiempo";
+import { UsuarioManager } from "../../../economy/UsuarioManager";
+import { usarItem } from "./sub4";
+import { UsuarioDB } from "../../../schemas/usuario";
+
+export async function infoItem(interaction: ChatInputCommandInteraction, usuario: UsuarioDB, item: ItemInv)
+{
+    const container = new ContainerBuilder()
+        .setAccentColor(colores.economia)
+        .addSectionComponents(
+            new SectionBuilder()
+                .addTextDisplayComponents(display => display.setContent(`## ${item.alias} [${item.subId}]`))
+                .setButtonAccessory(
+                    new ButtonBuilder()
+                        .setCustomId(`item_${item.subId}`)
+                        .setEmoji("⭐")
+                        .setLabel(
+                            !item.durabilidadActual
+                                ? "Usar"
+                                : item.equipado
+                                    ? "Desequipar"
+                                    : "Equipar"
+                        )
+                        .setStyle(item.equipado
+                            ? ButtonStyle.Danger
+                            : ButtonStyle.Success
+                        )
+                        .setDisabled(!item.usable)
+                )
+        )
+        .addTextDisplayComponents(display => display.setContent(`-# Equipado\n${item.equipado ? "Sí" : "No"}`))
+        .addTextDisplayComponents(display => display.setContent(
+            `-# Durabilidad\n${item.durabilidadActual ?? "Sin"}`
+        ));
+    const mensaje = await interaction.fetchReply()
+        ? await interaction.followUp({
+            components: [container],
+            flags: MessageFlags.IsComponentsV2
+        })
+        : await interaction.reply({
+            components: [container],
+            flags: MessageFlags.IsComponentsV2
+        });
+    const collector = await mensaje.awaitMessageComponent({
+        filter: i => i.user.id === interaction.user.id,
+        time: 5 * MINUTO
+    }).catch(() => null);
+    if(collector)
+    {
+        return await usarItem(interaction, usuario, item);
+    }
+}
 
 export async function info(interaction: ChatInputCommandInteraction)
 {
@@ -72,64 +122,14 @@ export async function info(interaction: ChatInputCommandInteraction)
     }
     else
     {
-        const usuario = await Usuarios.findOne({
-            "inventario.subId": subId 
-        });
-        if(!usuario)
+        const usuario = await UsuarioManager.obtener(interaction.user);
+        const item = usuario.inventario.find(i => i.subId === subId);
+        if(!item)
         {
             return await interaction.reply({
                 content: "No hay ningun item con ese subId",
                 flags: MessageFlags.Ephemeral
             });
         }
-        if(usuario.id !== interaction.user.id)
-        {
-            return await interaction.reply({
-                content: "Emmm, papi, no te corresponde ver este item, ok?",
-                flags: MessageFlags.Ephemeral
-            });
-        }
-        const item = usuario.inventario.find(i => i.subId === subId) as ItemInv;
-        const container = new ContainerBuilder()
-            .setAccentColor(colores.economia)
-            .addSectionComponents(
-                new SectionBuilder()
-                    .addTextDisplayComponents(display => display.setContent(`## ${item.alias} [${item.subId}]`))
-                    .setButtonAccessory(
-                        new ButtonBuilder()
-                            .setCustomId(`item_${item.subId}`)
-                            .setEmoji("⭐")
-                            .setLabel(
-                                !item.durabilidadActual
-                                    ? "Usar"
-                                    : item.equipado
-                                        ? "Desequipar"
-                                        : "Equipar"
-                            )
-                            .setStyle(item.equipado
-                                ? ButtonStyle.Danger
-                                : ButtonStyle.Success
-                            )
-                            .setDisabled(!item.usable)
-                    )
-            )
-            .addTextDisplayComponents(display => display.setContent(`-# Equipado\n${item.equipado ? "Sí" : "No"}`))
-            .addTextDisplayComponents(display => display.setContent(
-                `-# Durabilidad\n${item.durabilidadActual ?? "Sin"}`
-            ));
-
-        const mensaje = await interaction.reply({
-            components: [container],
-            flags: MessageFlags.IsComponentsV2
-        });
-        const collector = await mensaje.awaitMessageComponent({
-            filter: i => i.user.id === interaction.user.id,
-            time: 5 * MINUTO
-        }).catch(() => null);
-        if(!collector)
-        {
-            return;
-        }
-    //Comando de uso
     }    
 }

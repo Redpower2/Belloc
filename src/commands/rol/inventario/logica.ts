@@ -5,6 +5,7 @@ import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { colores } from "../../../utils/general/colores";
 import { Items } from "../../../schemas/item";
 import { MINUTO } from "../../../utils/general/tiempo";
+import { infoItem } from "../item/sub1";
 
 async function manejarArray(interaction: ChatInputCommandInteraction, usuario: Usuario, itemsArrays: ItemInv[][], indice: number)
 {
@@ -141,21 +142,9 @@ export async function execute(interaction: ChatInputCommandInteraction)
         }
         else
         {
-            return collector.stop("info_sub-id");
-        }
-    });
-    collector.on("end", async (_, reason) => 
-    {
-        switch(reason)
-        {
-            case "info_sub-id":
-                return await interaction.editReply({
-                    components: [
-                        new TextDisplayBuilder({ content: "No deberias estar viendo esto" })
-                    ]
-                });
-            default:
-            return;
+            const subId = customId.replace("item_", "")
+            const itemInv = inventario.find(i => i.subId === subId) as ItemInv;
+            return await infoItem(interaction, usuario, itemInv);
         }
     });
 }

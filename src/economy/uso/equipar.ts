@@ -11,10 +11,13 @@ export const general: UsoEntidad = {
             {
                 "inventario.$.equipado": true
             }
-        )
-        return interaction.reply({
-            content: `¡Equipaste tu ${usable.alias}! [${usable.durabilidadActual}]`
-        });
+        );
+        const mensaje = {
+                content: `¡Equipaste tu ${usable.alias}! [${usable.durabilidadActual}]`
+        };
+        return await interaction.fetchReply()
+            ? interaction.followUp(mensaje)
+            : interaction.reply(mensaje);
     },
     multiple: true
 }
