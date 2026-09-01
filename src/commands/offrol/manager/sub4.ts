@@ -303,6 +303,10 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
 
     collector.on("end", async (_, reason) =>
     {
+        if(item.durabilidad)
+        {
+            item.uso = "equipar"
+        }
         switch(reason)
         {
             case "time":
