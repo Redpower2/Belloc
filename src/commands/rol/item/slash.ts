@@ -86,6 +86,11 @@ export const data: ChatInputApplicationCommandData = {
                     type: ApplicationCommandOptionType.String,
                     name: "sub-id",
                     description: "SubId de un item de tu inventario (EXCLUYENTE CON NOMBRE)"
+                },
+                {
+                    type: ApplicationCommandOptionType.Integer,
+                    name: "cantidad",
+                    description: "Cantidad de items que querés usar"
                 }
             ]
         },    

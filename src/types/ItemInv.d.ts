@@ -5,4 +5,5 @@ interface ItemInv
     subId: string; 
     equipado?: boolean;
     durabilidadActual?: number;
+    usable: boolean;
 }

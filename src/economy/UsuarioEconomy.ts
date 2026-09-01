@@ -51,14 +51,17 @@ export const UsuarioEconomy = {
         {
             return null;
         }
-        const { id, nombre, durabilidad } = item;
+        const { id, nombre, durabilidad, uso } = item;
         let nuevosItems: ItemInv[] = [];
         for(let i = 0 ; i < cantidad ; i++)
         {
             const fabricItem: ItemInv = {
                 id: id,
                 alias: nombre,
-                subId: await genId()
+                subId: await genId(),
+                usable: uso
+                    ? true
+                    : false
             }
             if(durabilidad && durabilidad !== -1)
             {

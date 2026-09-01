@@ -20,6 +20,11 @@ const inventarioSchema = new Schema<ItemInv>(
         durabilidadActual: {
             type: Number
         },
+        usable: {
+            type: Boolean,
+            required: true,
+            default: false
+        }
     }
 )
 

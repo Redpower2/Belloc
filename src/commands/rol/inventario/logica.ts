@@ -24,7 +24,7 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuario: U
                 .addTextDisplayComponents(display => display.setContent(`### ${item.alias+equipadoText}`))
                 .setButtonAccessory(
                     new ButtonBuilder()
-                        .setCustomId(`item_${item.id}_${item.subId}`)
+                        .setCustomId(`item_${item.subId}`)
                         .setLabel("Info")
                         .setEmoji("🔍")
                         .setStyle(ButtonStyle.Primary)
@@ -148,18 +148,14 @@ export async function execute(interaction: ChatInputCommandInteraction)
     {
         switch(reason)
         {
-            case "time":
-                return await interaction.editReply({
-                    components: [
-                        new TextDisplayBuilder({ content: "Tiempo de visualización finalizado." })
-                    ]
-                });
             case "info_sub-id":
                 return await interaction.editReply({
                     components: [
                         new TextDisplayBuilder({ content: "No deberias estar viendo esto" })
                     ]
                 });
+            default:
+            return;
         }
     });
 }
