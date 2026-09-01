@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 
 export async function renombrar(interaction: ChatInputCommandInteraction)
@@ -7,7 +7,15 @@ export async function renombrar(interaction: ChatInputCommandInteraction)
     if(nombre.length > 32)
     {
         return await interaction.reply({
-            content: "No puedes tener un nombre tan largo."
+            content: "No puedes tener un nombre tan largo.",
+            flags: MessageFlags.Ephemeral
+        });
+    }
+    if(nombre === "### ELIMINADO ###")
+    {
+        return await interaction.reply({
+            content: "No puedes tener ese nombre.",
+            flags: MessageFlags.Ephemeral
         });
     }
     const subId = interaction.options.getString("sub-id", true);
