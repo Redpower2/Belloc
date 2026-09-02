@@ -12,10 +12,13 @@ export async function comando(interaction: ChatInputCommandInteraction)
 {
     const stringComando = interaction.options.getString("nombre", true);
     const comando = commandList[stringComando]
-    if( !comando || !comando.ayuda.subcomandos) return await interaction.reply({
-        content: "¡Este comando no tiene subcomandos!",
-        flags: 64
-    })
+    if(!comando || !comando.ayuda.subcomandos)
+    {
+        return await responder(interaction, {
+            content: "¡Este comando no tiene subcomandos!",
+            flags: 64
+        })
+    }
     const embed = new EmbedBuilder({
         title: `Subcomandos de ${comando.ayuda.nombre}${comando.ayuda.emoji}`,
         fields: [],
