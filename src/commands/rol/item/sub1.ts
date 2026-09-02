@@ -95,7 +95,7 @@ export async function info(interaction: ChatInputCommandInteraction)
                 .join("\n");
         }
         const embed = new EmbedBuilder()
-            .setTitle(`## ${item.nombre} [${item.id}]`)
+            .setTitle(`${item.nombre} [${item.id}]`)
             .setImage(
                 item.imagen
                     ? item.imagen
