@@ -16,7 +16,7 @@ export async function itemsTienda(interaction: ChatInputCommandInteraction)
         const container = new ContainerBuilder()
             .addTextDisplayComponents(
                 new TextDisplayBuilder()
-                    .setContent(`Tienda del servidor`)
+                    .setContent(`# Tienda del servidor`)
             )
             .addSeparatorComponents(
                 new SeparatorBuilder()
@@ -27,20 +27,11 @@ export async function itemsTienda(interaction: ChatInputCommandInteraction)
         if(!itemsTienda.length)
         {
             container
-                .addSectionComponents(
-                    new SectionBuilder()
-                        .addTextDisplayComponents(
-                            new TextDisplayBuilder()
-                                .setContent("## Sin items")
-                        )
-                        .setButtonAccessory(
-                            new ButtonBuilder()
-                                .setCustomId("editar-default")
-                                .setStyle(ButtonStyle.Secondary)
-                                .setEmoji("🛒")
-                                .setLabel("Editar")
-                        )
+                .addTextDisplayComponents(
+                    new TextDisplayBuilder()
+                        .setContent("## Sin items")
                 )
+                
         }
         else
         {

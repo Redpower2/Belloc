@@ -81,7 +81,6 @@ export const modalEdit = new ModalBuilder()
                     .setCustomId("añadirdescuento")
                     .setPlaceholder("1 al 99")
                     .setStyle(TextInputStyle.Short)
-                    .setRequired(true)
             ),
         new LabelBuilder()
             .setLabel("Retirar")
