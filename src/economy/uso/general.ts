@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, MessageComponentInteraction, TextDisplayBuilder } from "discord.js";
+import { ChatInputCommandInteraction, MessageComponentInteraction, MessageFlags, TextDisplayBuilder } from "discord.js";
 import { UsuarioDB } from "../../schemas/usuario";
 import { esV2 } from "../../utils/general/esV2";
 
@@ -13,13 +13,15 @@ export const general: UsoEntidad = {
                 new TextDisplayBuilder({ content: `¡Usaste ${cantidad} ${usable.alias}s!` })
             ]
         }
-        return await interaction.fetchReply()
-            ? interaction.editReply(
-                esV2(interaction as MessageComponentInteraction)
-                ? mensajeV2
-                : mensaje
-            )
-            : interaction.reply(mensaje);
+        if (interaction.replied || interaction.deferred) {
+            const replyActual = await interaction.fetchReply();
+            const esRespuestaV2 = replyActual.flags.has(MessageFlags.IsComponentsV2);
+            
+            return interaction.editReply(
+                esRespuestaV2 ? mensajeV2 : mensaje
+            );
+        }
+        return interaction.reply(mensaje);
     },
     multiple: true
 }

@@ -2,37 +2,34 @@ import { ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageC
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { ItemDB, Items } from "../../../schemas/item";
 import { usoEntidades } from "../../../economy/usoEntidad";
-import { UsuarioDB } from "../../../schemas/usuario";
 
 export async function usarItem(interaction: ChatInputCommandInteraction | MessageComponentInteraction, itemInv: ItemInv, cantidad: number = 1)
 {
+    const responder = async (content: string) => {
+        if (interaction.replied || interaction.deferred) {
+            return interaction.editReply({ content });
+        }
+        return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+    };
+
     if(!itemInv.usable)
     {
-        return await interaction.reply({
-            content: "¡Ese item no se puede usar!",
-            flags: MessageFlags.Ephemeral
-        });
+        return await responder("¡Ese item no se puede usar!");
     }
-    const item = await Items.findOne({
-        id: itemInv.id
-    }) as ItemDB;
+    const item = await Items.findOne({ id: itemInv.id }) as ItemDB;
     const itemUso = usoEntidades[item.uso!];
     if(!itemUso || itemUso.evento)
     {
-        return await interaction.reply({
-            content: "¡Ese item no se puede usar!",
-            flags: MessageFlags.Ephemeral
-        });
+        return await responder("¡Ese item no se puede usar!");
     }
     if(cantidad && !itemUso.multiple)
     {
-        return await interaction.reply({
-            content: "¡No puedes usar más de 1 de este item!",
-            flags: 64
-        });
+        return await responder("¡No puedes usar más de 1 de este item!");
     }
+
     return itemUso.funcion(interaction, itemInv, cantidad);
 }
+
 
 export async function usar(interaction: ChatInputCommandInteraction)
 {

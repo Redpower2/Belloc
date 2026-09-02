@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, EmbedBuilder, MessageFlags, SectionBuilder } from "discord.js";
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, EmbedBuilder, InteractionEditReplyOptions, InteractionReplyOptions, InteractionUpdateOptions, MessageComponentInteraction, MessageFlags, SectionBuilder } from "discord.js";
 import { Items } from "../../../schemas/item";
 import { colores } from "../../../utils/general/colores";
 import { aMayusculas } from "../../../utils/general/aMayusculas";
@@ -7,7 +7,7 @@ import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { usarItem } from "./sub4";
 import { UsuarioDB } from "../../../schemas/usuario";
 
-export async function infoItem(interaction: ChatInputCommandInteraction, usuario: UsuarioDB, item: ItemInv)
+export async function infoItem(interaction: ChatInputCommandInteraction | MessageComponentInteraction, usuario: UsuarioDB, item: ItemInv)
 {
     const container = new ContainerBuilder()
         .setAccentColor(colores.economia)
@@ -36,21 +36,23 @@ export async function infoItem(interaction: ChatInputCommandInteraction, usuario
         .addTextDisplayComponents(display => display.setContent(
             `-# Durabilidad\n${item.durabilidadActual ?? "Sin"}`
         ));
-    const mensaje = await interaction.fetchReply()
-        ? await interaction.followUp({
-            components: [container],
-            flags: MessageFlags.IsComponentsV2
-        })
-        : await interaction.reply({
-            components: [container],
-            flags: MessageFlags.IsComponentsV2
-        });
+    const contenido = {
+        components: [container],
+        flags: MessageFlags.IsComponentsV2
+    }
+    const mensaje = interaction.isMessageComponent()
+        ? await (interaction as ButtonInteraction).editReply(contenido as InteractionEditReplyOptions)
+        : interaction.replied || interaction.deferred
+            ? await interaction.editReply(contenido as InteractionEditReplyOptions)
+            : await interaction.reply({ ...contenido, fetchReply: true } as InteractionReplyOptions)
+    
     const collector = await mensaje.awaitMessageComponent({
         filter: i => i.user.id === interaction.user.id,
         time: 5 * MINUTO
     }).catch(() => null);
     if(collector)
     {
+        await collector.deferUpdate();
         return await usarItem(collector, item);
     }
 }
@@ -83,7 +85,13 @@ export async function info(interaction: ChatInputCommandInteraction)
         {
             const statsArray = Object.entries(item.stats);
             stats = statsArray
-                .map(s => `${aMayusculas(s[0])}: ${s[1]}`)
+                .map(s => 
+                {
+                    if(s[1])
+                    {
+                        return `${aMayusculas(s[0])}: ${s[1]}`
+                    }
+                })
                 .join("\n");
         }
         const embed = new EmbedBuilder()
@@ -111,7 +119,9 @@ export async function info(interaction: ChatInputCommandInteraction)
                 },
                 {
                     name: "Stats",
-                    value: stats,
+                    value: stats.length > 2
+                        ? stats
+                        : "Sin stats",
                     inline: true
                 }
             )

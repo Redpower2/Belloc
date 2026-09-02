@@ -114,8 +114,8 @@ export async function execute(interaction: ChatInputCommandInteraction)
     });
     collector.on("collect", async boton => 
     {
-        const { customId } = boton;
         await boton.deferUpdate();
+        const { customId } = boton;
         if(customId === "paginaminus")
         {
             indice -= 1
@@ -141,9 +141,10 @@ export async function execute(interaction: ChatInputCommandInteraction)
         }
         else
         {
+            collector.stop();
             const subId = customId.replace("item_", "")
             const itemInv = inventario.find(i => i.subId === subId) as ItemInv;
-            return await infoItem(interaction, usuario, itemInv);
+            return await infoItem(boton, usuario, itemInv);
         }
     });
 }

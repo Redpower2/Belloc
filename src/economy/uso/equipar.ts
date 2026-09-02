@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, MessageComponentInteraction, TextDisplayBuilder } from "discord.js";
+import { ChatInputCommandInteraction, MessageComponentInteraction, MessageFlags, TextDisplayBuilder } from "discord.js";
 import { UsuarioDB, Usuarios } from "../../schemas/usuario";
 import { esV2 } from "../../utils/general/esV2";
 
@@ -15,21 +15,26 @@ export const equipar: UsoEntidad = {
                 }
             }
         );
+        const toggle = usable.equipado
+            ? "Desequipaste"
+            : "Equipaste"
         const mensaje = {
-                content: `¡Equipaste tu ${usable.alias}! [${usable.durabilidadActual}]`
+                content: `¡${toggle} tu ${usable.alias}! [${usable.durabilidadActual}]`
         };
         const mensajeV2 = {
             components: [
-                new TextDisplayBuilder({ content: `¡Equipaste tu ${usable.alias}! [${usable.durabilidadActual}]` })
+                new TextDisplayBuilder({ content: `¡${toggle} tu ${usable.alias}! [${usable.durabilidadActual}]` })
             ]
         }
-        return await interaction.fetchReply()
-            ? interaction.editReply(
-                esV2(interaction as MessageComponentInteraction)
-                ? mensajeV2
-                : mensaje
-            )
-            : interaction.reply(mensaje);
+        if (interaction.replied || interaction.deferred) {
+            const replyActual = await interaction.fetchReply();
+            const esRespuestaV2 = replyActual.flags.has(MessageFlags.IsComponentsV2);
+            
+            return interaction.editReply(
+                esRespuestaV2 ? mensajeV2 : mensaje
+            );
+        }
+        return interaction.reply(mensaje);
     },
     multiple: true
 }
