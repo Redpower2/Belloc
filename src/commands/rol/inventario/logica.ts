@@ -5,7 +5,7 @@ import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { colores } from "../../../utils/general/colores";
 import { Items } from "../../../schemas/item";
 import { MINUTO } from "../../../utils/general/tiempo";
-import { infoItem } from "../item/sub1";
+import { infoItem } from "../../../utils/general/infoItem";
 
 async function manejarArray(interaction: ChatInputCommandInteraction, usuario: Usuario, itemsArrays: ItemInv[][], indice: number)
 {

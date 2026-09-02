@@ -1,6 +1,4 @@
 import { ChatInputCommandInteraction, MessageComponentInteraction, MessageFlags, TextDisplayBuilder } from "discord.js";
-import { UsuarioDB } from "../../schemas/usuario";
-import { esV2 } from "../../utils/general/esV2";
 
 export const general: UsoEntidad = {
     async funcion(interaction: ChatInputCommandInteraction | MessageComponentInteraction, usable: ItemInv, cantidad: number)
