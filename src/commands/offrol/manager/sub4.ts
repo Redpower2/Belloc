@@ -4,6 +4,7 @@ import { MINUTO, SEGUNDO } from "../../../utils/general/tiempo";
 import { ItemDB, Items } from "../../../schemas/item";
 import { usoEntidades } from "../../../economy/usoEntidad";
 import { aMayusculas } from "../../../utils/general/aMayusculas";
+import { responder } from "../../../utils/general/responder";
 
 async function manejoItem(interaction: ChatInputCommandInteraction, embed: EmbedBuilder, item: Item, nombreDB?: ItemDB | null)
 {
@@ -57,7 +58,7 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
                 ]
             }
         ]
-    const mensaje = await interaction.reply({
+    const mensaje = await responder(interaction, {
         embeds: [embed],
         components: row
     });
@@ -310,11 +311,11 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
         switch(reason)
         {
             case "time":
-            return await interaction.editReply({
+            return await responder(interaction, {
                 content: "¡Se acabó el tiempo!"
             });
             case "cancelar":
-            return await interaction.editReply({
+            return await responder(interaction, {
                 content: "¡Item cancelado!",
                 embeds: [],
                 components: []
@@ -345,7 +346,7 @@ async function manejoItem(interaction: ChatInputCommandInteraction, embed: Embed
                         )
                     }
                 }
-            return await interaction.editReply({
+            return await responder(interaction, {
                 content: "¡Item creado con éxito!",
                 embeds: [embed],
                 components: []
@@ -359,13 +360,13 @@ export async function crearItem(interaction: ChatInputCommandInteraction)
     const nombre = interaction.options.getString("nombre", true);
     if(nombre.length > 32)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Ese nombre es muy largo."
         });
     }
     if(nombre === "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Nombre inválido",
             flags: MessageFlags.Ephemeral
         });
@@ -376,7 +377,7 @@ export async function crearItem(interaction: ChatInputCommandInteraction)
 
     if(nombreDB && nombreDB.nombre !== "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "¡Un item con ese nombre ya existe!",
             flags: MessageFlags.Ephemeral
         })
@@ -408,7 +409,7 @@ export async function editarItem(interaction: ChatInputCommandInteraction)
 
     if(!item || item.nombre === "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "¡Ese item no existe!",
             flags: 64
         });

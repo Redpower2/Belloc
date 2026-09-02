@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageFlags } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { UsuarioEconomy } from "../../../economy/UsuarioEconomy";
+import { responder } from "../../../utils/general/responder";
 
 export async function dar(interaction: ChatInputCommandInteraction)
 {
@@ -10,7 +11,7 @@ export async function dar(interaction: ChatInputCommandInteraction)
     const subId = options.getString("sub-id");
     if(nombre && subId || !options.data.length)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Parametros inválidos",
             flags: MessageFlags.Ephemeral
         });
@@ -25,12 +26,12 @@ export async function dar(interaction: ChatInputCommandInteraction)
     const items = await UsuarioEconomy.transferiritem(usuario1, usuario2, prm1, prm2!, cantidad);
     if(!items)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "¡Cantidad inválida!",
             flags: MessageFlags.Ephemeral
         });
     }
-    return await interaction.reply({
+    return await responder(interaction, {
         content: `${cantidad} ${items[0].alias} dados a <@${userDisc.id}>`
     });
 }

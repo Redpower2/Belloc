@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageComponentInteraction, MessageFlags } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { usarItem } from "../../../utils/general/usarItem";
+import { responder } from "../../../utils/general/responder";
 
 
 
@@ -13,7 +14,7 @@ export async function usar(interaction: ChatInputCommandInteraction)
     const cantidad = options.getInteger("cantidad") ?? 1;
     if(nombre && subId || !options.data.length)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Parametros inválidos",
             flags: MessageFlags.Ephemeral
         });
@@ -32,7 +33,7 @@ export async function usar(interaction: ChatInputCommandInteraction)
     });
     if(!itemInv)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No tienes ese item.",
             flags: MessageFlags.Ephemeral
         });

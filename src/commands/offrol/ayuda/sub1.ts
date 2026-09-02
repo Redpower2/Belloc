@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { commandList } from "../..";
 import { colores } from "../../../utils/general/colores";
+import { responder } from "../../../utils/general/responder";
 
 export async function general(interaction: ChatInputCommandInteraction)
 {
@@ -23,7 +24,7 @@ export async function general(interaction: ChatInputCommandInteraction)
             }]);
         }
     }
-    return await interaction.reply({
+    return await responder(interaction, {
         embeds: [embed]
     });
 }

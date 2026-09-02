@@ -1,6 +1,7 @@
-import { ChatInputCommandInteraction, Guild, GuildMember } from "discord.js";
+import { ChatInputCommandInteraction, Guild } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { colores } from "../../../utils/general/colores";
+import { responder } from "../../../utils/general/responder";
 
 export async function ver(interaction: ChatInputCommandInteraction)
 {
@@ -8,10 +9,7 @@ export async function ver(interaction: ChatInputCommandInteraction)
     const usuario = await UsuarioManager.obtener(userDisc);
     const { dinero, banco } = usuario;
     const servidor = (interaction.guild as Guild);
-    const miembro = await servidor.members.fetch({
-        user: userDisc
-    }) as GuildMember;
-    return await interaction.reply({
+    return await responder(interaction, {
         embeds: [
             {
                 title: `Dinero de ${usuario.nombre}`,

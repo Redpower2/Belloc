@@ -2,6 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteracti
 import { Items } from "../../../schemas/item";
 import { colores } from "../../../utils/general/colores";
 import { MINUTO } from "../../../utils/general/tiempo";
+import { responder } from "../../../utils/general/responder";
 async function manejarArray(interaction: ChatInputCommandInteraction, itemsArrays: Item[][], indice: number)
 {
     const componentes = [];
@@ -35,7 +36,7 @@ async function manejarArray(interaction: ChatInputCommandInteraction, itemsArray
             );
         componentes.push(row);
     }
-    return await interaction.editReply({
+    return await responder(interaction, {
         embeds: [embed],
         components: componentes
     });
@@ -100,13 +101,13 @@ export async function items(interaction: ChatInputCommandInteraction)
         switch(reason)
         {
             case "time":
-                return await interaction.editReply({
+                return await responder(interaction, {
                     components: [
                         new TextDisplayBuilder({ content: "Tiempo de visualización finalizado." })
                     ]
                 });
             case "info_sub-id":
-                return await interaction.editReply({
+                return await responder(interaction, {
                     components: [
                         new TextDisplayBuilder({ content: "No deberias estar viendo esto" })
                     ]

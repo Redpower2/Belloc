@@ -1,25 +1,16 @@
-import { ChatInputCommandInteraction, MessageComponentInteraction, MessageFlags, TextDisplayBuilder } from "discord.js";
+import { MessageFlags, RepliableInteraction, TextDisplayBuilder } from "discord.js";
+import { responder } from "../../utils/general/responder";
+import { UsoEntidad } from "../../types/UsoEntidad";
 
 export const general: UsoEntidad = {
-    async funcion(interaction: ChatInputCommandInteraction | MessageComponentInteraction, usable: ItemInv, cantidad: number)
+    async funcion(interaction: RepliableInteraction, usable: ItemInv, cantidad: number)
     {
-        const mensaje = {
-            content: `¡Usaste ${cantidad} ${usable.alias}s!`
-        }
-        const mensajeV2 = {
+        return responder(interaction, {
             components: [
                 new TextDisplayBuilder({ content: `¡Usaste ${cantidad} ${usable.alias}s!` })
-            ]
-        }
-        if (interaction.replied || interaction.deferred) {
-            const replyActual = await interaction.fetchReply();
-            const esRespuestaV2 = replyActual.flags.has(MessageFlags.IsComponentsV2);
-            
-            return interaction.editReply(
-                esRespuestaV2 ? mensajeV2 : mensaje
-            );
-        }
-        return interaction.reply(mensaje);
+            ],
+            flags: MessageFlags.IsComponentsV2
+        })
     },
     multiple: true
 }

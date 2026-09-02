@@ -3,6 +3,7 @@ import { Combates } from "../../../schemas/combate";
 import { Items } from "../../../schemas/item";
 import { Personajes } from "../../../schemas/personaje";
 import { Usuarios } from "../../../schemas/usuario";
+import { responder } from "../../../utils/general/responder";
 
 export async function setup(interaction: ChatInputCommandInteraction)
 {
@@ -10,7 +11,7 @@ export async function setup(interaction: ChatInputCommandInteraction)
     await Items.deleteMany({});
     await Personajes.deleteMany({});
     await Usuarios.deleteMany({});
-    return await interaction.reply({
+    return await responder(interaction, {
         content: `Base de datos seteada.`,
         files: [{
             name: "metroliaron.jpg",

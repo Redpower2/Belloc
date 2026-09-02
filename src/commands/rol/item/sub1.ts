@@ -3,6 +3,7 @@ import { Items } from "../../../schemas/item";
 import { colores } from "../../../utils/general/colores";
 import { aMayusculas } from "../../../utils/general/aMayusculas";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
+import { responder } from "../../../utils/general/responder";
 
 export async function info(interaction: ChatInputCommandInteraction)
 {
@@ -12,14 +13,14 @@ export async function info(interaction: ChatInputCommandInteraction)
     const subId = options.getString("sub-id");
     if(options.data.length > 1 || !options.data.length)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Parametros invalidos",
             flags: MessageFlags.Ephemeral
         });
     }
     if(nombre && nombre === "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No.",
             flags: MessageFlags.Ephemeral
         })
@@ -73,7 +74,7 @@ export async function info(interaction: ChatInputCommandInteraction)
                 }
             )
             .setColor(colores.economia);
-        return await interaction.reply({
+        return await responder(interaction, {
             embeds: [embed]
         });
     }
@@ -83,7 +84,7 @@ export async function info(interaction: ChatInputCommandInteraction)
         const item = usuario.inventario.find(i => i.subId === subId);
         if(!item)
         {
-            return await interaction.reply({
+            return await responder(interaction, {
                 content: "No hay ningun item con ese subId",
                 flags: MessageFlags.Ephemeral
             });

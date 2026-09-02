@@ -1,5 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { commandList } from "../..";
+import { responder } from "../../../utils/general/responder";
 interface SubcomandoAyuda 
 {
     nombre: string,
@@ -30,7 +31,7 @@ export async function comando(interaction: ChatInputCommandInteraction)
             inline: true
         }]);
     }
-    return await interaction.reply({
+    return await responder(interaction, {
         embeds: [embed]
     });
 }

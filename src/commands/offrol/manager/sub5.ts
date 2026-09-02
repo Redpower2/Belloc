@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { Items } from "../../../schemas/item";
 import { Usuarios } from "../../../schemas/usuario";
+import { responder } from "../../../utils/general/responder";
 
 export async function borrarItem(interaction: ChatInputCommandInteraction)
 {
@@ -10,7 +11,7 @@ export async function borrarItem(interaction: ChatInputCommandInteraction)
     });
     if(!item || item.nombre === "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "¡Ese item no existe!",
             flags: 64
         });
@@ -38,7 +39,7 @@ export async function borrarItem(interaction: ChatInputCommandInteraction)
         }
     );
 //Falta el codigo de las tiendas para cuando lo haga
-    return await interaction.reply({
+    return await responder(interaction, {
         content: `Item "${item.nombre}" borrado. El \`ID: ${id}\` queda liberado.`
     });
 }

@@ -1,19 +1,20 @@
 import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
+import { responder } from "../../../utils/general/responder";
 
 export async function renombrar(interaction: ChatInputCommandInteraction)
 {
     const nombre = interaction.options.getString("nombre_nuevo", true);
     if(nombre.length > 32)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No puedes tener un nombre tan largo.",
             flags: MessageFlags.Ephemeral
         });
     }
     if(nombre === "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No puedes tener ese nombre.",
             flags: MessageFlags.Ephemeral
         });
@@ -23,7 +24,7 @@ export async function renombrar(interaction: ChatInputCommandInteraction)
     const item = usuario.inventario.find(i => i.subId === subId);
     if(!item)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No tenés un item con ese subId."
         });
     }
@@ -35,7 +36,7 @@ export async function renombrar(interaction: ChatInputCommandInteraction)
             "interaction.$.alias": nombre
         }
     );
-    return await interaction.reply({
+    return await responder(interaction, {
         content: `Renombraste tu item a ${nombre}`
     });
 }

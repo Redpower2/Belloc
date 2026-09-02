@@ -2,6 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteracti
 import { Usuarios } from "../../../schemas/usuario";
 import { colores } from "../../../utils/general/colores";
 import { MINUTO } from "../../../utils/general/tiempo";
+import { responder } from "../../../utils/general/responder";
 
 async function manejarArray(interaction: ChatInputCommandInteraction, usuariosArrays: Usuario[][], indice: number)
 {
@@ -35,7 +36,7 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuariosAr
             );
         componentes.push(row);
     }
-    return await interaction.editReply({
+    return await responder(interaction, {
         embeds: [embed],
         components: componentes
     });
@@ -44,7 +45,6 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuariosAr
 
 export async function usuarios(interaction: ChatInputCommandInteraction)
 {
-    await interaction.deferReply();
     const usuarios = await Usuarios.find({});
     const usuariosArrays: Usuario[][] = [];
     let indice = -1;
@@ -100,13 +100,13 @@ export async function usuarios(interaction: ChatInputCommandInteraction)
         switch(reason)
         {
             case "time":
-                return await interaction.editReply({
+                return await responder(interaction, {
                     components: [
                         new TextDisplayBuilder({ content: "Tiempo de visualización finalizado." })
                     ]
                 });
             case "info_sub-id":
-                return await interaction.editReply({
+                return await responder(interaction, {
                     components: [
                         new TextDisplayBuilder({ content: "No deberias estar viendo esto" })
                     ]

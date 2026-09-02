@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { UsuarioEconomy } from "../../../economy/UsuarioEconomy";
+import { responder } from "../../../utils/general/responder";
 
 export async function dar(interaction: ChatInputCommandInteraction)
 {
@@ -13,7 +14,7 @@ export async function dar(interaction: ChatInputCommandInteraction)
     const dinero1 = await UsuarioEconomy.quitardinero(usuario1, cantidad, banco);
     if(dinero1 === null)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Cantidad inválida."
         });
     }
@@ -22,7 +23,7 @@ export async function dar(interaction: ChatInputCommandInteraction)
     const simbolo = banco === "banco"
         ? "💰"
         : "🪙"
-    return await interaction.reply({
+    return await responder(interaction, {
         content: `<@${interaction.user.id}> (${dinero1}${simbolo}) le dió dinero a <@${userDisc.id}> (${dinero2}${simbolo})`
     });
 

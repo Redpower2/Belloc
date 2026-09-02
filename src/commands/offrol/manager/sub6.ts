@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { UsuarioEconomy } from "../../../economy/UsuarioEconomy";
 import { Items } from "../../../schemas/item";
+import { responder } from "../../../utils/general/responder";
 
 export async function daritemUsuario(interaction: ChatInputCommandInteraction)
 {
@@ -14,7 +15,7 @@ export async function daritemUsuario(interaction: ChatInputCommandInteraction)
     });
     if(!item || item.nombre === "### ELIMINADO ###")
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No hay ningun item con ese id.",
             flags: MessageFlags.Ephemeral
         });
@@ -22,11 +23,11 @@ export async function daritemUsuario(interaction: ChatInputCommandInteraction)
     const itemDado = await UsuarioEconomy.daritem(usuario, item, cantidad);
     if(!itemDado)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Cantidad inválida."
         });
     }
-    return await interaction.reply({
+    return await responder(interaction, {
         content: "¡Item dado!"
     })
 }
@@ -39,7 +40,7 @@ export async function quitaritemUsuario(interaction: ChatInputCommandInteraction
     const subId = interaction.options.getString("sub-id");
     if(id && subId)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "No puedes usar 2 parametros incluyentes entre sí."
         });
     }
@@ -50,7 +51,7 @@ export async function quitaritemUsuario(interaction: ChatInputCommandInteraction
             : null;
     if(!prm1)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "¡Escoge un parámetro!",
             flags: MessageFlags.Ephemeral
         });
@@ -60,11 +61,11 @@ export async function quitaritemUsuario(interaction: ChatInputCommandInteraction
     const itemDado = await UsuarioEconomy.quitaritem(usuario, prm1, prm2, cantidad);
     if(!itemDado)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Cantidad inválida."
         });
     }
-    return await interaction.reply({
+    return await responder(interaction, {
         content: "Item quitado"
     });
 }

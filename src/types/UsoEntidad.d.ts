@@ -1,6 +1,8 @@
+import { RepliableInteraction } from "discord.js";
+
 interface UsoEntidad
 {
-    funcion(interaction: ChatInputCommandInteraction | MessageComponentInteraction, usable: ItemInv, cantidad?: number): any,
+    funcion(interaction: RepliableInteraction, usable: ItemInv, cantidad?: number): any,
     multiple?: boolean,
     evento?: boolean
 }

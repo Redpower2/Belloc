@@ -1,10 +1,11 @@
-import { ChatInputCommandInteraction, MessageComponentInteraction, ContainerBuilder, SectionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ButtonInteraction, InteractionEditReplyOptions, InteractionReplyOptions } from "discord.js";
+import { ContainerBuilder, SectionBuilder, ButtonBuilder, ButtonStyle, MessageFlags, RepliableInteraction } from "discord.js";
 import { UsuarioDB } from "../../schemas/usuario";
 import { colores } from "./colores";
 import { MINUTO } from "./tiempo";
 import { usarItem } from "./usarItem";
+import { responder } from "./responder";
 
-export async function infoItem(interaction: ChatInputCommandInteraction | MessageComponentInteraction, usuario: UsuarioDB, item: ItemInv)
+export async function infoItem(interaction: RepliableInteraction, usuario: UsuarioDB, item: ItemInv)
 {
     const container = new ContainerBuilder()
         .setAccentColor(colores.economia)
@@ -33,15 +34,10 @@ export async function infoItem(interaction: ChatInputCommandInteraction | Messag
         .addTextDisplayComponents(display => display.setContent(
             `-# Durabilidad\n${item.durabilidadActual ?? "Sin"}`
         ));
-    const contenido = {
+    const mensaje = await responder(interaction, {
         components: [container],
         flags: MessageFlags.IsComponentsV2
-    }
-    const mensaje = interaction.isMessageComponent()
-        ? await (interaction as ButtonInteraction).editReply(contenido as InteractionEditReplyOptions)
-        : interaction.replied || interaction.deferred
-            ? await interaction.editReply(contenido as InteractionEditReplyOptions)
-            : await interaction.reply({ ...contenido, fetchReply: true } as InteractionReplyOptions)
+    })
     
     const collector = await mensaje.awaitMessageComponent({
         filter: i => i.user.id === interaction.user.id,

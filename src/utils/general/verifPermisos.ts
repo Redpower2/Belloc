@@ -1,4 +1,5 @@
 import { ChatInputCommandInteraction, GuildMember, MessageFlags } from "discord.js";
+import { responder } from "./responder";
 
 export async function verifPermisos(interaction: ChatInputCommandInteraction)
 {
@@ -6,7 +7,7 @@ export async function verifPermisos(interaction: ChatInputCommandInteraction)
     const tieneRol = miembro.roles.cache.find(rol => rol.name === "Bot Manager");
     if(!tieneRol)
     {
-        await interaction.reply({
+        await responder(interaction, {
             content: "¡No eres Bot Manager!",
             flags: MessageFlags.Ephemeral
         });

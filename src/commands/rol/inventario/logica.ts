@@ -6,6 +6,7 @@ import { colores } from "../../../utils/general/colores";
 import { Items } from "../../../schemas/item";
 import { MINUTO } from "../../../utils/general/tiempo";
 import { infoItem } from "../../../utils/general/infoItem";
+import { responder } from "../../../utils/general/responder";
 
 async function manejarArray(interaction: ChatInputCommandInteraction, usuario: Usuario, itemsArrays: ItemInv[][], indice: number)
 {
@@ -81,7 +82,7 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuario: U
             );
         componentes.push(row)
     }
-    return await interaction.editReply({
+    return await responder(interaction, {
         components: componentes,
         flags: MessageFlags.IsComponentsV2
     });
@@ -91,7 +92,6 @@ async function manejarArray(interaction: ChatInputCommandInteraction, usuario: U
 
 export async function execute(interaction: ChatInputCommandInteraction)
 {
-    await interaction.deferReply();
     const userDisc = interaction.options.getUser("usuario") ?? interaction.user;
     const usuario = await UsuarioManager.obtener(userDisc);
     const { inventario } = usuario;

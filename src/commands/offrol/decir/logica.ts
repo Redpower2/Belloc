@@ -1,5 +1,6 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { numeroRandom } from "../../../utils/general/numeroRandom";
+import { responder } from "../../../utils/general/responder";
 
 const defolt = [
     "Quiero tetas.", 
@@ -41,18 +42,18 @@ export async function execute(interaction: ChatInputCommandInteraction)
         const dichito = dicho.toLowerCase()
         if(filtro.some(palabra =>  dichito.includes(palabra)))
         {
-            return await interaction.reply({
+            return await responder(interaction, {
                 content: "Yo soy un tipo educado, no voy a repetir esas cosas."
             });
         }
-        return await interaction.reply({
+        return await responder(interaction, {
             content: dicho
         });
     }
     else
     {
         const random = numeroRandom(defolt.length);
-        return await interaction.reply({
+        return await responder(interaction, {
             content: defolt[random]
         });
     }

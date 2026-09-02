@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { Usuarios } from "../../../schemas/usuario";
 import { colores } from "../../../utils/general/colores";
+import { responder } from "../../../utils/general/responder";
 
 
 export async function execute(interaction: ChatInputCommandInteraction)
@@ -8,7 +9,7 @@ export async function execute(interaction: ChatInputCommandInteraction)
     const usuarios = await Usuarios.find({});
     if(usuarios.length === 0)
     {
-        return await interaction.reply({
+        return await responder(interaction, {
             content: "Son todos pobres en el servidor."
         });
     }
@@ -39,7 +40,7 @@ export async function execute(interaction: ChatInputCommandInteraction)
     )
     .join("\n");
 
-    return await interaction.reply({
+    return await responder(interaction, {
         embeds: [
             {
                 title: "Los más ricos",

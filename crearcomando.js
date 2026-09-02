@@ -40,11 +40,12 @@ export const ayuda: ComandosAyuda = {
 
 fs.writeFileSync(logica,
 `import { ChatInputCommandInteraction } from "discord.js";
+import { responder } from "../../../utils/general/responder";
 
 
 export async function execute(interaction: ChatInputCommandInteraction)
 {
-    return await interaction.reply({
+    return await responder(interaction, {
         content: "Comando en progreso",
         flags: 64
     });
