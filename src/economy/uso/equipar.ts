@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { UsuarioDB } from "../../schemas/usuario";
 
-export const general: UsoEntidad = {
+export const equipar: UsoEntidad = {
     async funcion(interaction: ChatInputCommandInteraction, usuario: UsuarioDB, usable: ItemInv, cantidad: number)
     {
         await usuario.updateOne(
