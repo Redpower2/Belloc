@@ -1,10 +1,10 @@
-import { ButtonInteraction, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageFlags } from "discord.js";
+import { ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageComponentInteraction, MessageFlags } from "discord.js";
 import { UsuarioManager } from "../../../economy/UsuarioManager";
 import { ItemDB, Items } from "../../../schemas/item";
 import { usoEntidades } from "../../../economy/usoEntidad";
 import { UsuarioDB } from "../../../schemas/usuario";
 
-export async function usarItem(interaction: ChatInputCommandInteraction | ButtonInteraction, usuario: UsuarioDB, itemInv: ItemInv, cantidad: number = 1)
+export async function usarItem(interaction: ChatInputCommandInteraction | MessageComponentInteraction, itemInv: ItemInv, cantidad: number = 1)
 {
     if(!itemInv.usable)
     {
@@ -31,7 +31,7 @@ export async function usarItem(interaction: ChatInputCommandInteraction | Button
             flags: 64
         });
     }
-    return itemUso.funcion(interaction, usuario, itemInv, cantidad);
+    return itemUso.funcion(interaction, itemInv, cantidad);
 }
 
 export async function usar(interaction: ChatInputCommandInteraction)
@@ -66,5 +66,5 @@ export async function usar(interaction: ChatInputCommandInteraction)
             flags: MessageFlags.Ephemeral
         });
     }
-    return await usarItem(interaction, usuario, itemInv, cantidad);
+    return await usarItem(interaction, itemInv, cantidad);
 }

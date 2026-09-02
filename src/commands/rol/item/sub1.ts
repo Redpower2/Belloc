@@ -51,7 +51,7 @@ export async function infoItem(interaction: ChatInputCommandInteraction, usuario
     }).catch(() => null);
     if(collector)
     {
-        return await usarItem(interaction, usuario, item);
+        return await usarItem(collector, item);
     }
 }
 
