@@ -251,6 +251,18 @@ export const data: ChatInputApplicationCommandData = {
             ]
         },
         {
+            type: ApplicationCommandOptionType.SubcommandGroup,
+            name: "tienda",
+            description: "Comandos de tiendas",
+            options: [
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: "items",
+                    description: "Manejar items de la tienda"
+                }
+            ]
+        },
+        {
             type: ApplicationCommandOptionType.Subcommand,
             name: "setup",
             description: "Iniciar la economia"

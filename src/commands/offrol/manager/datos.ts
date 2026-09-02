@@ -77,6 +77,11 @@ export const ayuda: ComandosAyuda = {
             nombre: "usuario limpiarinv",
             descripcion: "Borrar todos los items de un usuario",
             emoji: "🧹"
+        },
+        {
+            nombre: "tienda items",
+            descripcion: "Manejar items de la tienda",
+            emoji: "🛒"
         }
     ],
     color: colores.especial
