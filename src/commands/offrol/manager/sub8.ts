@@ -6,8 +6,9 @@ import { esEmoji } from "../../../utils/general/esEmoji";
 import { TiendaItems } from "../../../schemas/tiendaItem";
 import { Items } from "../../../schemas/item";
 import { responder } from "../../../utils/general/responder";
+import { colores } from "../../../utils/general/colores";
 
-async function armarTienda()
+export async function armarTienda()
 {
     let tienda = await TiendaItems.find({});
     const tiendasArray: TiendaItem[][] = [];
@@ -28,6 +29,7 @@ async function armarMensaje(interaction: ChatInputCommandInteraction, tiendas: T
 {
     let tienda = tiendas[indice];
     const container = new ContainerBuilder()
+        .setAccentColor(colores.especial)
         .addTextDisplayComponents(
             new TextDisplayBuilder()
                 .setContent(`# Tienda del servidor`)
@@ -47,31 +49,29 @@ async function armarMensaje(interaction: ChatInputCommandInteraction, tiendas: T
     }
     else
     {
-        tienda.forEach(
-            function(i)
+        tienda.forEach(i =>
+        {
+            const itemText = [`### [${i.relacion}] ${i.nombre}${i.emoji} — $${i.precio}`];
+            if(i.descuento)
             {
-                const itemText = [`### [${i.relacion}] ${i.nombre}${i.emoji} — $${i.precio}`];
-                if(i.descuento)
-                {
-                    itemText.push(` (-${i.descuento})`)
-                }
-                container
-                    .addSectionComponents(
-                        new SectionBuilder()
-                            .addTextDisplayComponents(
-                                new TextDisplayBuilder()
-                                    .setContent(itemText.join(""))
-                            )
-                            .setButtonAccessory(
-                                new ButtonBuilder()
-                                    .setCustomId(`editar-${i.id}`)
-                                    .setStyle(ButtonStyle.Primary)
-                                    .setEmoji("🛒")
-                                    .setLabel("Editar")
-                            )
-                    )
+                itemText.push(` (-${i.descuento})`)
             }
-        )
+            container
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(
+                            new TextDisplayBuilder()
+                                .setContent(itemText.join(""))
+                        )
+                        .setButtonAccessory(
+                            new ButtonBuilder()
+                                .setCustomId(`editar-${i.id}`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setEmoji("🛒")
+                                .setLabel("Editar")
+                        )
+                )
+        })
     }
     const row = new ActionRowBuilder<ButtonBuilder>()
     const añadirBoton = new ButtonBuilder()
