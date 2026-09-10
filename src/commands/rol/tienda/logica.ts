@@ -58,7 +58,7 @@ async function armarMensaje(interaction: ChatInputCommandInteraction, tiendas: T
                     .setStyle(ButtonStyle.Primary)
                     .setLabel(`Vender 🪙${precio}`)
             }
-            const content = [`${i.nombre}${i.emoji}`];
+            const content = [`## ${i.nombre}${i.emoji}`];
             if(i.descuento)
             {
                 content.push(`\n(-${i.descuento}%)`);
@@ -102,7 +102,7 @@ async function armarMensaje(interaction: ChatInputCommandInteraction, tiendas: T
 
 export async function execute(interaction: ChatInputCommandInteraction)
 {
-    const usuario = await UsuarioManager.obtener(interaction.user);
+    let usuario = await UsuarioManager.obtener(interaction.user);
     let indice = 0;
     const tiendas = await armarTienda();
     const mensaje = await armarMensaje(interaction, tiendas, indice);
@@ -113,6 +113,7 @@ export async function execute(interaction: ChatInputCommandInteraction)
     collector.on("collect", async b => 
     {
         let tienda = tiendas[indice];
+        usuario = await UsuarioManager.obtener(interaction.user);
         switch(b.customId)
         {
             case "paginaminus":
