@@ -116,35 +116,34 @@ export async function execute(interaction: ChatInputCommandInteraction)
     {
         await boton.deferUpdate();
         const { customId } = boton;
-        if(customId === "paginaminus")
+        switch(customId)
         {
-            indice -= 1
-            if(indice < 0)
-            {
-                indice = itemsArrays.length - 1
-            }
-            await manejarArray(interaction, usuario, itemsArrays, indice);
-        }
-        else if(customId === "paginazero")
-        {
-            indice = 0;
-            await manejarArray(interaction, usuario, itemsArrays, indice);
-        }
-        else if(customId === "paginaplus")
-        {
-            indice += 1
-            if(indice > itemsArrays.length - 1)
-            {
+            case "paginaminus":
+                indice -= 1
+                if(indice < 0)
+                {
+                    indice = itemsArrays.length - 1
+                }
+                await manejarArray(interaction, usuario, itemsArrays, indice);
+            break;
+            case "paginazero":
                 indice = 0;
-            }
-            await manejarArray(interaction, usuario, itemsArrays, indice);
-        }
-        else
-        {
-            collector.stop();
-            const subId = customId.replace("item_", "")
-            const itemInv = inventario.find(i => i.subId === subId) as ItemInv;
-            return await infoItem(boton, usuario, itemInv);
+                await manejarArray(interaction, usuario, itemsArrays, indice);
+            break;
+            case "paginaplus":
+                indice += 1
+                if(indice > itemsArrays.length - 1)
+                {
+                    indice = 0;
+                }
+                await manejarArray(interaction, usuario, itemsArrays, indice);
+            break;
+            default:
+                collector.stop();
+                const subId = customId.replace("item_", "")
+                const itemInv = inventario.find(i => i.subId === subId) as ItemInv;
+                return await infoItem(boton, usuario, itemInv);
+            break;
         }
     });
 }

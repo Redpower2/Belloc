@@ -68,31 +68,29 @@ export async function items(interaction: ChatInputCommandInteraction)
     {
         const { customId } = boton;
         await boton.deferUpdate();
-        if(customId === "paginaminus")
+        switch(customId)
         {
-            indice -= 1
-            if(indice < 0)
-            {
-                indice = itemsArrays.length - 1
-            }
-            await manejarArray(interaction, itemsArrays, indice);
-        }
-        else if(customId === "paginazero")
-        {
-            indice = 0;
-            await manejarArray(interaction, itemsArrays, indice);
-        }
-        else if(customId === "paginaplus")
-        {
-            indice += 1
-            if(indice > itemsArrays.length - 1)
-            {
+            case "paginaminus":
+                indice -= 1
+                if(indice < 0)
+                {
+                    indice = itemsArrays.length - 1
+                }
+                await manejarArray(interaction, itemsArrays, indice);
+            break;
+            case "paginazero":
                 indice = 0;
-            }
-            await manejarArray(interaction, itemsArrays, indice);
-        }
-        else
-        {
+                await manejarArray(interaction, itemsArrays, indice);
+            break;
+            case "paginaplus":
+                indice += 1
+                if(indice > itemsArrays.length - 1)
+                {
+                    indice = 0;
+                }
+                await manejarArray(interaction, itemsArrays, indice);
+            break;
+            default:
             return collector.stop("info_sub-id");
         }
     });
