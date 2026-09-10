@@ -146,6 +146,7 @@ export async function execute(interaction: ChatInputCommandInteraction)
                     .setTitle(`${itemTienda.nombre}`)
                     .addLabelComponents(
                         new LabelBuilder()
+                            .setLabel("Cantidad")
                             .setTextInputComponent(
                                 new TextInputBuilder()
                                     .setCustomId("cantidad")
@@ -179,8 +180,8 @@ export async function execute(interaction: ChatInputCommandInteraction)
                     const dinero1 = await UsuarioEconomy.quitardinero(usuario, precioFinal);
                     if(dinero1 === null)
                     {
-                        return await responder(interaction, {
-                            content: "Cantidad inválida."
+                        return await responder(modalEnviado, {
+                            content: "Sin dinero."
                         });
                     }
                     await UsuarioEconomy.daritem(usuario, itemTienda, cantidad);
@@ -203,7 +204,7 @@ export async function execute(interaction: ChatInputCommandInteraction)
                     const itemE = await UsuarioEconomy.quitaritem(usuario, "id", itemInv.id, cantidad);
                     if(!itemE)
                     {
-                        return await responder(interaction, {
+                        return await responder(modalEnviado, {
                             content: "Cantidad inválida."
                         });
                     }
