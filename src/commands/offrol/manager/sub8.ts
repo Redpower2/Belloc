@@ -155,6 +155,14 @@ export async function itemsTienda(interaction: ChatInputCommandInteraction)
                         flags: MessageFlags.Ephemeral
                     });
                 }
+                const tiendaItem = tienda.find(i => i.id === item.id);
+                if(tiendaItem)
+                {
+                    return await responder(modalEnv, {
+                        content: "No puedes poner el mismo item 2 veces en la tienda.",
+                        flags: MessageFlags.Ephemeral
+                    });
+                }
                 const nuevoItem: TiendaItem = {
                     nombre: nombre,
                     id: item.id,
