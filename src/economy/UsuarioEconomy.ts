@@ -1,7 +1,8 @@
-import { ItemDB } from "../schemas/item";
+import { ItemDB, Items } from "../schemas/item";
 import { UsuarioDB } from "../schemas/usuario";
 import { ParametrosItem } from "../types/ParametrosItem";
 import { genId } from "../utils/general/genId";
+import { tienePropiedad } from "../utils/general/tienePropiedad";
 
 type Propiedad = "banco" | "dinero"
 
@@ -45,13 +46,20 @@ export const UsuarioEconomy = {
         });
         return cantidad;
     },
-    async daritem(usuario: UsuarioDB, item: ItemDB, cantidad: number)
+    async daritem(usuario: UsuarioDB, item: ItemDB | TiendaItem, cantidad: number)
     {
         if(cantidad <= 0)
         {
             return null;
         }
-        const { id, nombre, durabilidad, uso } = item;
+        let itemReal = item;
+        if(tienePropiedad(item, "precio"))
+        {
+            itemReal = await Items.findOne({
+                id: item.id
+            }) as ItemDB;
+        }
+        const { id, nombre, durabilidad, uso } = itemReal as ItemDB;
         let nuevosItems: ItemInv[] = [];
         for(let i = 0 ; i < cantidad ; i++)
         {
