@@ -1,6 +1,6 @@
 Estoy tan frustrado de la vida realmente ultimamente. Y con lo desprolijo que es el servidor de Snake la verdad que no me dan ganas ni de pensar. Fue lindo experimento, que se yo, y está bastante terminado, falta la cuestión del laburo, incluso del combate, si alguien se quiere copar a arreglar mi codigo de mierda acá lo tengo. No creo seguir más con bots de discord así que me da igual
 
-Ya sé que mi código es una mierda, pero bueno papi, que se le va a hacer. No soy programador y evidentemente nunca lo seré
+Ya sé que mi código es una mierda, pero bueno papi, que se le va a hacer. No soy programador y evidentemente nunca lo seré. Tanto desprecio a la vida ultimamente de que ni tiene branches, y no, para qué, si yo pensaba que iba a ser un proyecto corto
 
 Este era el roadmap original de esta cosa
 "El camino de desarrollo de Beloc, el hermano bastardo de Tiandi. Como va a ser un campo de experimentos y más a petición que por voluntad mía, va a ser mucho más corto y con menos hiatus. Ya es más fácil hacerlo con el camino hecho desde Nueva Castilla. O al menos eso pensaba. La mala comunicación con el owner hizo esto mucho más complicado porque no me dijo cosas como que los items tienen durabilidad, que afectan al dado, la cantidad de sistemas de trabajos que voy a tener que hacer
